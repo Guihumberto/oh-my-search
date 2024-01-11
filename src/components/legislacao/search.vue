@@ -2,7 +2,7 @@
     <section>
         <div class="container">
             {{ reqRead }} <br> 
-            <v-subtitle>Busca por termos, frases, fonte, periodo e mais</v-subtitle>
+            <small>Busca por termos, frases, fonte, periodo e mais</small>
             <h2 class="spaceh2">Busca na legislação</h2>
             <div class="content">
                 <v-form @submit.prevent="searchEnv(1)" ref="form">

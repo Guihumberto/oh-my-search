@@ -1,10 +1,10 @@
 <template>
     <div>
-        <v-btn v-if="!showBar && listSearchs.length" @click="showBar = true" class="btnHidden" color="black" variant icon="mdi-chevron-left"></v-btn>
+        <v-btn v-if="!showBar && listSearchs.length" @click="showBar = true" class="btnHidden" color="black" icon="mdi-chevron-left"></v-btn>
         <div class="sideRight" v-if="showBar && listSearchs.length">
             <h3 class="d-flex justify-space-between align-center"> 
                 Buscas
-                <v-btn @click="showBar = false" class="btnHidden" color="black" variant icon="mdi-chevron-right"></v-btn>
+                <v-btn @click="showBar = false" class="btnHidden" color="black" icon="mdi-chevron-right"></v-btn>
             </h3>
             <div class="content">
                 <v-card v-for="item, i in listSearchs" :key="i" class="mb-1" hover @click="searchAgain(item)">

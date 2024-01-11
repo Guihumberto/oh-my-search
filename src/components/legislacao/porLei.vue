@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="legislacao">
-        <v-subtitle>Busca da lei por ano, fonte ou texto</v-subtitle>
+        <small>Busca da lei por ano, fonte ou texto</small>
         <h2 class="font-weight-bold">Legislação</h2>
         <div class="my-5">
             <v-text-field

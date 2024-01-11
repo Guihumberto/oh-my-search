@@ -35,7 +35,6 @@
     },
     methods:{
       searchOnChanged(){
-        console.log('ioioduosad')
         this.searchActive = !this.searchActive
       }
     }
