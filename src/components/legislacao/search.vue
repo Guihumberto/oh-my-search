@@ -69,7 +69,7 @@
                 <div v-else>
                     <div class="border my-5 px-2 d-flex justify-space-between align-center"  v-if="resultsSearch.length"> 
                         <p class="py-5">Total de registros: {{ this.totalDocs }}</p>
-                        <div>
+                        <div class="btns2">
                             <v-btn
                                 variant="outlined"
                                 size="small"
@@ -109,8 +109,9 @@
                                 </div>
                             </div>
                             <v-pagination 
+                    
                                 class="my-5" 
-                                :total-visible="7"
+                                :total-visible="3"
                                 :length="Math.ceil(totalDocs/pagination.qtd)"
                                 v-model="pagination.page"
                                 @click="pagination.inicio=pagination.page*10-10, searchEnv(3)"
@@ -673,6 +674,11 @@
     .autocompletes{
         flex-direction: column;
         gap: 0;
+    }
+    .btns2{
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
     }
 }
 </style>
