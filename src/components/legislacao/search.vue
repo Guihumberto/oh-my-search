@@ -105,7 +105,7 @@
                                 </div>   
                                 <div class="btns">
                                     <page :page="res._source" :searchP="search.text" />
-                                    <v-btn @click="openLaw(res)">PDF</v-btn>
+                                    <v-btn size="small" color="red" @click="openLaw(res)">PDF</v-btn>
                                 </div>
                             </div>
                             <v-pagination 

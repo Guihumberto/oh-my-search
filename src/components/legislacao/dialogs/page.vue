@@ -2,6 +2,7 @@
     <div class="text-center">
       <v-btn
         color="primary"
+        size="small"
       >
         Ver
         <v-dialog
