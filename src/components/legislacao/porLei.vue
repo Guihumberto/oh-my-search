@@ -1,0 +1,235 @@
+<template>
+    <div class="legislacao" v-if="false">
+        <h2 class="my-5">Legislação</h2> 
+        <div 
+            class="border-b pa-3 oneresult"
+            v-for="item, i in laws" :key="i"
+            v-if="false"
+        >   
+            <div class="titles">
+                <span class="title">{{ item.key }}</span> <br>
+        
+            </div>
+            <div class="btns">
+                <span class="title">{{ item.doc_count }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="legislacao">
+        <v-subtitle>Busca da lei por ano, fonte ou texto</v-subtitle>
+        <h2 class="font-weight-bold">Legislação</h2>
+        <div class="my-5">
+            <v-text-field
+                label="Buscar"
+                variant="outlined"
+                density="compact"
+                prepend-inner-icon="mdi-magnify"
+                v-model.trim="search.text"
+                :rules="[rules.required, rules.minname]"
+                clearable
+            ></v-text-field>
+            <div class="autocompletes">
+                <v-autocomplete
+                    clearable
+                    chips
+                    label="Fonte"
+                    density="compact"
+                    :items="fontes"
+                    multiple
+                    variant="outlined"
+                    v-model="search.fonte"
+                    closable-chips
+                    prepend-inner-icon="mdi-alpha-f-box"
+                ></v-autocomplete>
+                <v-autocomplete
+                    prepend-inner-icon="mdi-calendar"
+                    clearable
+                    chips
+                    label="Período"
+                    density="compact"
+                    :items="periodo"
+                    multiple
+                    variant="outlined"
+                    v-model="search.years"
+                    closable-chips
+                ></v-autocomplete>
+            </div>
+        </div>
+        Total de normas: {{ qtdLaws }} <br>
+        <v-expansion-panels>
+            <v-expansion-panel
+            v-for="tipo, t in orgLaws" :key="t"
+            >
+            <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ tipo.tipo }}</v-expansion-panel-title>
+            <v-expansion-panel-text>
+                <v-expansion-panels variant="popout">
+                    <v-expansion-panel
+                        v-for="ano, a in tipo.subcategorias" :key="a" >
+                        <v-expansion-panel-title>{{ ano.ano }}</v-expansion-panel-title>
+                        <v-expansion-panel-text>
+                            <div class="even-columns">
+                                <div   v-for="law, l in ano.norma" :key="l">
+                                    <a class="openLaw" :href="`text/${law.id}`" target="_blank">{{ law.title }}</a>
+                                </div>
+                            </div>
+                        </v-expansion-panel-text>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+
+            </v-expansion-panel-text>
+
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </div>
+</template>
+
+<script>
+    import api from "@/services/api"
+    
+    export default {
+        data(){
+            return{ 
+                allLaw: [],
+                qtdLaws: 0,
+                search:{
+                    text: '',
+                    years: [],
+                    fonte: []
+                },
+                periodo:[
+                    1984, 1985, 1986,1987, 1988, 1989,
+                    1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
+                    2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+                    2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
+                    2020, 2021, 2022, 2023
+                ],
+                fontes:[
+                    "resolucoes", "portarias", "consultas", "leis-estaduais", "medidas-provisorias", "leis-federais",
+                    "editais", "portarias-conjuntas", "orientacao-tributaria", "beneficios", "instrucoes-normativas",
+                    "ato-declaratorio-interpretativo", "atos-declaratorios", "convenios", "decretos", "anexos-ricms", 
+                    "resolucoes", "ricms", "beneficios-fiscais"
+                ],
+                rules:{
+                    required: (value) => !!value || "Campo obrigatório",
+                    minname: (v) => (v||'').length >= 4 || "Mínimo 4 caracteres",
+                },
+            }
+        },
+        props:{
+            laws: Array
+        },
+        computed:{
+            orgLaws(){
+                let list = this.allLaw.map(x => x._source)
+
+                if(this.search.text){
+                    let search = this.search.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                    //retirar caracteres especiais
+                    let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
+                    //fazer o filtro
+                    list =  list.filter(item => exp.test(item.title.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) )
+
+                }
+
+                if(this.search.years.length){
+                    list = list.filter(x => this.search.years.includes(x.ano))
+                }
+
+                if(this.search.fonte.length){
+                    list = list.filter(x => this.search.fonte.includes(x.tipo))
+                }
+
+                const classificacao = list.reduce((acumulador, item) => {
+                // Verifica se a categoria já existe no acumulador
+                const categoriaExistente = acumulador.find(c => c.tipo === item.tipo);
+
+                if (categoriaExistente) {
+                    // Se a categoria já existe, verifica se a subcategoria já existe
+                    const subcategoriaExistente = categoriaExistente.subcategorias.find(s => s.ano === item.ano);
+
+                    if (subcategoriaExistente) {
+                        // Se a subcategoria já existe, adicione o valor
+                        subcategoriaExistente.norma.push({id: item.id, page: item.total_pages, title: item.title, path: item.path, revogado: item.revogado});
+                    } else {
+                        // Se a subcategoria não existe, crie uma nova subcategoria
+                        categoriaExistente.subcategorias.push({
+                            ano: item.ano,
+                            norma: [{id: item.id, page: item.total_pages, title: item.title, path: item.path, revogado: item.revogado}],
+                        });
+                    }
+                } else {
+                    // Se a categoria não existe, crie uma nova categoria com a subcategoria
+                    acumulador.push({
+                        tipo: item.tipo,
+                        subcategorias: [{
+                            ano: item.ano,
+                            norma: [{id: item.id, page: item.total_pages, title: item.title, path: item.path, revogado: item.revogado}],
+                        }],
+                    });
+                }
+
+                return acumulador;
+                }, []);
+
+                return classificacao
+            }
+        },
+        methods:{
+            async getAll(){
+                const response = await api.post("laws_v2/_search", {
+                    from: 0,
+                    size: 5000
+                })
+                this.allLaw = response.data.hits.hits
+                this.qtdLaws = response.data.hits.total.value
+            },
+        },
+        created(){
+            this.getAll()
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+.legislacao{
+    margin-top: 20rem;
+}
+.oneresult{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.even-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.openLaw{
+    color: grey;
+    text-decoration: none;
+    transition: .5s;
+}
+.openLaw:hover{
+    color: black;
+    font-weight: 600;
+}
+.openLaw::before{
+    content: "- ";
+}
+.radios, .autocompletes{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
+@media (max-width: 500px) {
+    .radios{
+        flex-direction: column;
+        align-items: baseline;
+        gap: 0;
+    }
+    .autocompletes{
+        flex-direction: column;
+        gap: 0;
+    }
+}
+</style>
