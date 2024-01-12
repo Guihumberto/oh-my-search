@@ -71,19 +71,23 @@
                 </div>
                 <div v-else>
                     <div class="border my-5 px-2 d-flex justify-space-between align-center"  v-if="resultsSearch.length"> 
-                        <p class="py-5">Total de registros: {{ this.totalDocs }}</p>
-                        <div class="btns2">
+                        <div class="d-flex justify-center align-center">
+                            <p class="py-5">Total de registros: {{ this.totalDocs }}</p>
+                            <v-btn 
+                                    v-if="resultsSearch.length" 
+                                    @click="resultsSearch = [], searchOn = false" 
+                                    variant="text" size="small" color="primary"
+                                >Limpar</v-btn>
+                        </div>
+                        <div class="btns2 pa-2">
                             <v-btn
                                 variant="outlined"
                                 size="small"
                                 class="mr-2"
                                 @click="viewsAggs = !viewsAggs"
-                            >Mudar Visualização </v-btn>
-                            <v-btn 
-                                v-if="resultsSearch.length" 
-                                @click="resultsSearch = [], searchOn = false" 
-                                variant="outlined" size="small"
-                            >Limpar</v-btn>
+                                title="Mudar visualização"
+                            ><v-icon>{{viewsAggs ?'mdi-file-document-multiple-outline':'mdi-file'}}</v-icon> </v-btn>
+                          
                         </div>
                     </div>
                     <div v-if="resultsSearch.length">
@@ -112,7 +116,7 @@
                                 </div>
                             </div>
                             <v-pagination 
-                    
+                                density="compact"
                                 class="my-5" 
                                 :total-visible="3"
                                 :length="Math.ceil(totalDocs/pagination.qtd)"
@@ -688,7 +692,21 @@
     .btns2{
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
         gap: .5rem;
+    }
+    .oneresult{
+        flex-direction: column;
+        align-items: baseline;
+        gap: .8rem;
+        border-bottom: 1px solid grey;
+    }
+    .oneresult .btns{
+        align-items: center;
+        justify-content: end;
+        width: 100%;
+        
     }
 }
 </style>

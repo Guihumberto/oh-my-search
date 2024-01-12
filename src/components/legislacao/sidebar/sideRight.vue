@@ -54,5 +54,8 @@
     .sideRight{
         display: none;
     }
+    .btnHidden{
+        display: none;
+    }
 }
 </style>
