@@ -636,7 +636,7 @@
             }
         },
         created(){
-            this.getAll()
+            // this.getAll()
         }
     }
 </script>

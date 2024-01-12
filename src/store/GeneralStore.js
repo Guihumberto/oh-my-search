@@ -26,6 +26,9 @@ export const useGeneralStore = defineStore("General", {
         },
         reqChange(item){
             this.req = item
+        },
+        removeListSearch(item){
+            this.listSearch.splice(item, 1)
         }
     }
 })
