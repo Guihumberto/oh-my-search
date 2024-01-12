@@ -7,7 +7,7 @@
                 <v-btn variant="text"  @click="showBar = false" class="btnHidden mb-2" color="black" icon="mdi-chevron-right"></v-btn>
             </h3>
             <div class="content">
-                <v-card v-for="item, i in listSearchs" :key="i" class="mb-1" hover @click="searchAgain(item)">
+                <v-card elevation="0" v-for="item, i in listSearchs" :key="i" class="mb-1" hover @click="searchAgain(item, i)">
                     <v-card-text class="pa-2 d-flex align-center justify-space-between">
                         <div>
                             {{ item.text }} 
@@ -15,6 +15,20 @@
                         </div>
                         <v-icon @click.stop="removeSearch(i)" class="pa-0 ma-0" color="red">mdi-delete</v-icon>
                     </v-card-text>
+                    <v-tooltip
+                        activator="parent"
+                        location="start"
+                    >
+                    Texto: {{item.text}} <br>
+                    <div v-if="item.termo" v-text="item.termo == 1 ? 'Termo: Frase Exata':'Termo: Qualquer palavra'"></div>
+                    <v-chip-group>
+                        <v-chip v-if="item.years.length" v-for="ano, a in item.years" :key="a">{{ano}}</v-chip>
+                    </v-chip-group>
+                    <v-chip-group>
+                        <v-chip v-if="item.fonte.length" v-for="fonte, f in item.fonte" :key="f">{{fonte}}</v-chip>
+                    </v-chip-group>
+                    <div v-if="item.precision">com precisão</div>
+                </v-tooltip>
                 </v-card>
             </div>
         </div>
@@ -36,9 +50,9 @@
             }
         },
         methods:{
-            searchAgain(item){
+            searchAgain(item, i){
                 const req = true
-                generalStore.reqChange(req)
+                generalStore.reqChange(req, i)
                 this.$router.push(`leges?search=${item.text}&years=${item.years}&fonte=${item.fonte}&termo=${item.termo}&precision=${item.precision}`)
             },
             removeSearch(item){

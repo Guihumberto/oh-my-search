@@ -20,6 +20,7 @@
                 <div class="my-5">
                     <v-text-field
                         label="Buscar"
+                        placeholder="Digite o nome ou número da norma"
                         variant="outlined"
                         density="compact"
                         prepend-inner-icon="mdi-magnify"

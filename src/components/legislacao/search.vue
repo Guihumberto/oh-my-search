@@ -12,6 +12,7 @@
                     <v-text-field
                         clearable
                         label="Busca"
+                        placeholder="Digite um ou mais termos ou frase exata"
                         prepend-inner-icon="mdi-magnify"
                         variant="outlined"
                         v-model.trim="search.text"

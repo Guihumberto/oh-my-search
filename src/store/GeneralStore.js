@@ -3,7 +3,8 @@ import { defineStore } from "pinia";
 export const useGeneralStore = defineStore("General", {
     state: () => ({
         listSearch: [],
-        req: false
+        req: false,
+        search: {}
     }),
     getters: {
         readListStore(){
@@ -11,6 +12,9 @@ export const useGeneralStore = defineStore("General", {
         },
         readReq(){
             return this.req
+        },
+        readSearch(){
+            return this.search
         }
     },
     actions:{
@@ -24,8 +28,9 @@ export const useGeneralStore = defineStore("General", {
             }
             this.listSearch.unshift(search)
         },
-        reqChange(item){
+        reqChange(item, i){
             this.req = item
+            this.search = this.listSearch[i]
         },
         removeListSearch(item){
             this.listSearch.splice(item, 1)
