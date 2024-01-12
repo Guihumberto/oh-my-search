@@ -1,86 +1,87 @@
 <template>
-    <div class="legislacao" v-if="false">
-        <h2 class="my-5">Legislação</h2> 
-        <div 
-            class="border-b pa-3 oneresult"
-            v-for="item, i in laws" :key="i"
-            v-if="false"
-        >   
-            <div class="titles">
-                <span class="title">{{ item.key }}</span> <br>
-        
+    <section>
+        <div class="container">
+            <div class="d-flex justify-space-between">
+                <div>
+                    Home
+                </div>
+                <router-link to="/leges" class="linkTO">Busca por termo</router-link>
             </div>
-            <div class="btns">
-                <span class="title">{{ item.doc_count }}</span>
+            <div v-if="load" class="load">
+                <v-progress-circular
+                        :size="50"
+                        color="primary"
+                        indeterminate
+                    ></v-progress-circular>
             </div>
-        </div>
-    </div>
-    <div class="legislacao">
-        <small>Busca da lei por ano, fonte ou texto</small>
-        <h2 class="font-weight-bold">Legislação</h2>
-        <div class="my-5">
-            <v-text-field
-                label="Buscar"
-                variant="outlined"
-                density="compact"
-                prepend-inner-icon="mdi-magnify"
-                v-model.trim="search.text"
-                :rules="[rules.required, rules.minname]"
-                clearable
-            ></v-text-field>
-            <div class="autocompletes">
-                <v-autocomplete
-                    clearable
-                    chips
-                    label="Fonte"
-                    density="compact"
-                    :items="fontes"
-                    multiple
-                    variant="outlined"
-                    v-model="search.fonte"
-                    closable-chips
-                    prepend-inner-icon="mdi-alpha-f-box"
-                ></v-autocomplete>
-                <v-autocomplete
-                    prepend-inner-icon="mdi-calendar"
-                    clearable
-                    chips
-                    label="Período"
-                    density="compact"
-                    :items="periodo"
-                    multiple
-                    variant="outlined"
-                    v-model="search.years"
-                    closable-chips
-                ></v-autocomplete>
-            </div>
-        </div>
-        Total de normas: {{ qtdLaws }} <br>
-        <v-expansion-panels>
-            <v-expansion-panel
-            v-for="tipo, t in orgLaws" :key="t"
-            >
-            <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ tipo.tipo }}</v-expansion-panel-title>
-            <v-expansion-panel-text>
-                <v-expansion-panels variant="popout">
+            <div class="legislacao" v-else>
+                <small>Busca da lei por ano, fonte ou texto</small>
+                <h2 class="font-weight-bold">Legislação</h2>
+                <div class="my-5">
+                    <v-text-field
+                        label="Buscar"
+                        variant="outlined"
+                        density="compact"
+                        prepend-inner-icon="mdi-magnify"
+                        v-model.trim="search.text"
+                        :rules="[rules.required, rules.minname]"
+                        clearable
+                    ></v-text-field>
+                    <div class="autocompletes">
+                        <v-autocomplete
+                            clearable
+                            chips
+                            label="Fonte"
+                            density="compact"
+                            :items="fontes"
+                            multiple
+                            variant="outlined"
+                            v-model="search.fonte"
+                            closable-chips
+                            prepend-inner-icon="mdi-alpha-f-box"
+                        ></v-autocomplete>
+                        <v-autocomplete
+                            prepend-inner-icon="mdi-calendar"
+                            clearable
+                            chips
+                            label="Período"
+                            density="compact"
+                            :items="periodo"
+                            multiple
+                            variant="outlined"
+                            v-model="search.years"
+                            closable-chips
+                        ></v-autocomplete>
+                    </div>
+                </div>
+                Total de normas: {{ qtdLaws }} <br>
+                <v-expansion-panels>
                     <v-expansion-panel
-                        v-for="ano, a in tipo.subcategorias" :key="a" >
-                        <v-expansion-panel-title>{{ ano.ano }}</v-expansion-panel-title>
-                        <v-expansion-panel-text>
-                            <div class="even-columns">
-                                <div   v-for="law, l in ano.norma" :key="l">
-                                    <a class="openLaw" :href="`text/${law.id}`" target="_blank">{{ law.title }}</a>
-                                </div>
-                            </div>
-                        </v-expansion-panel-text>
+                    v-for="tipo, t in orgLaws" :key="t"
+                    >
+                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ tipo.tipo }}</v-expansion-panel-title>
+                    <v-expansion-panel-text>
+                        <v-expansion-panels variant="popout">
+                            <v-expansion-panel
+                                v-for="ano, a in tipo.subcategorias" :key="a" >
+                                <v-expansion-panel-title>{{ ano.ano }}</v-expansion-panel-title>
+                                <v-expansion-panel-text>
+                                    <div class="even-columns">
+                                        <div   v-for="law, l in ano.norma" :key="l">
+                                            <a class="openLaw" :href="`text/${law.id}`" target="_blank">{{ law.title }}</a>
+                                        </div>
+                                    </div>
+                                </v-expansion-panel-text>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+        
+                    </v-expansion-panel-text>
+        
                     </v-expansion-panel>
                 </v-expansion-panels>
-
-            </v-expansion-panel-text>
-
-            </v-expansion-panel>
-        </v-expansion-panels>
-    </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script>
@@ -113,6 +114,7 @@
                     required: (value) => !!value || "Campo obrigatório",
                     minname: (v) => (v||'').length >= 4 || "Mínimo 4 caracteres",
                 },
+                load: false
             }
         },
         props:{
@@ -176,12 +178,20 @@
         },
         methods:{
             async getAll(){
-                const response = await api.post("laws_v2/_search", {
+                try {
+                    this.load = true
+                    const response = await api.post("laws_v2/_search", {
                     from: 0,
                     size: 5000
                 })
                 this.allLaw = response.data.hits.hits
                 this.qtdLaws = response.data.hits.total.value
+                } catch (error) {
+                    console.log("error");
+                }finally{
+                    this.load = false
+                }
+               
             },
         },
         created(){
@@ -191,8 +201,11 @@
 </script>
 
 <style lang="scss" scoped>
-.legislacao{
-    margin-top: 20rem;
+.load{
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .oneresult{
     display: flex;
@@ -221,6 +234,16 @@
     width: 100%;
     gap: 1rem;
 }
+.linkTO{
+    padding: .5rem;
+    font-weight: 500;
+    color: rgb(160, 195, 107);
+    transition: .5s;
+}
+.linkTO:hover{
+    color: rgb(120, 144, 83);
+    background: rgb(227, 235, 216);
+}
 @media (max-width: 500px) {
     .radios{
         flex-direction: column;
@@ -230,6 +253,10 @@
     .autocompletes{
         flex-direction: column;
         gap: 0;
+    }
+    .even-columns {
+        display: grid;
+        grid-template-columns: 1fr;
     }
 }
 </style>

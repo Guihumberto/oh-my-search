@@ -1,7 +1,10 @@
 <template>
     <section>
         <div class="container">
-            {{ reqRead }} <br> 
+            <div class="d-flex justify-space-between">
+                <div>{{ reqRead }}</div> 
+                <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
+            </div>
             <small>Busca por termos, frases, fonte, periodo e mais</small>
             <h2 class="spaceh2">Busca na legislação</h2>
             <div class="content">
@@ -123,7 +126,6 @@
                     </v-alert>
                 </div>
             </div>
-            <for-law :laws="laws"/>
         </div>
     </section>
 </template>
@@ -135,7 +137,6 @@
     import allPages from "@/components/legislacao/dialogs/allPages"
     import docs from "@/components/legislacao/dialogs/document"
     import aggs from "@/components/legislacao/buscas/searchAggs"
-    import forLaw from "@/components/legislacao/porLei.vue"
 
     import { useGeneralStore } from '@/store/GeneralStore'
     const generalStore = useGeneralStore()  
@@ -145,8 +146,7 @@
             page,
             allPages,
             docs,
-            aggs,
-            forLaw
+            aggs
         },
         data(){
             return{
@@ -663,6 +663,16 @@
 }
 .subtitle{
     font-size: .9rem;
+}
+.linkTO{
+    padding: .5rem;
+    font-weight: 500;
+    color: rgb(160, 195, 107);
+    transition: .5s;
+}
+.linkTO:hover{
+    color: rgb(120, 144, 83);
+    background: rgb(227, 235, 216);
 }
 
 @media (max-width: 500px) {

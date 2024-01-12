@@ -21,6 +21,11 @@ const routes = [
         name: 'Texto',
         component: () => import('@/views/textoComplet.vue'),
       },
+      {
+        path: '/legesporlei',
+        name: 'Legislacaoporlei',
+        component: () => import('@/views/LegesPorLei.vue'),
+      },
     ],
   },
 ]
