@@ -18,4 +18,9 @@
     display: flex;
     justify-content: space-between;
 }
+@media (max-width: 500px) {
+    .legesWrapper{
+        display: block;
+    }
+}
 </style>

@@ -60,7 +60,7 @@
                 <v-btn color="error" variant="text" @click="document=[]">
                     <v-icon>mdi-delete</v-icon> Excluir</v-btn>
             </div>
-            <div class="resultsSearch" v-if="searchOn">
+            <div class="resultsSearch" id="results" v-if="searchOn">
                 <h2 class="my-3">Resultados</h2>
                 <div class="text-center" v-if="load">
                     <v-progress-circular
@@ -130,6 +130,7 @@
                     </v-alert>
                 </div>
             </div>
+            <div class="spaceFooter my-16 py-16"></div>
         </div>
     </section>
 </template>
@@ -584,6 +585,8 @@
                         console.log("erro");
                     }finally{
                         this.load = false
+                        const element = document.getElementById('results')
+                        element.scrollIntoView({behavior: "smooth"})
                     }
                    
                 }
@@ -678,6 +681,9 @@
     color: rgb(120, 144, 83);
     background: rgb(227, 235, 216);
 }
+.spaceFooter{
+    display: none;
+}
 
 @media (max-width: 500px) {
     .radios{
@@ -707,6 +713,9 @@
         justify-content: end;
         width: 100%;
         
+    }
+    .spaceFooter{
+        display: block;
     }
 }
 </style>
