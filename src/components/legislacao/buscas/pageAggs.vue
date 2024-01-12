@@ -3,6 +3,8 @@
       <v-btn
         color="primary"
         size="small"
+        variant="tonal"
+        title="Ver páginas agregadas"
       >
         Ver
         <v-dialog

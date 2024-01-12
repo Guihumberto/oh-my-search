@@ -10,7 +10,7 @@
                             <h4>{{ lei.title }} - {{ lei.ano }}</h4>
                             <div class="btns">
                                 <aggspage :page="lei.page" />
-                                <v-btn color="red" size="small" @click="openLaw(lei)">PDF</v-btn>
+                                <v-btn variant="tonal" color="red" size="small" @click="openLaw(lei)" title="Ver todo o documento">PDF</v-btn>
                             </div>
                         </div>
                     </div>  

@@ -25,11 +25,16 @@
                                 :label="item.name" :value="item.id">
                             </v-radio>
                         </v-radio-group>
-                        <v-checkbox 
-                            class="checkboxx"
-                            label="Aumentar a precisão" color="red-darken-3" 
-                            v-model="search.precision"
-                        ></v-checkbox>
+                        <v-tooltip text="Limita a quantidade do resultado para os mais relevantes">
+                            <template v-slot:activator="{ props }">
+                                <v-checkbox 
+                                    v-bind="props"
+                                    class="checkboxx"
+                                    label="Aumentar a precisão" color="red-darken-3" 
+                                    v-model="search.precision"
+                                ></v-checkbox>
+                            </template>
+                        </v-tooltip>
                     </div>
                     <div class="autocompletes">
                         <v-autocomplete
@@ -53,7 +58,7 @@
                             closable-chips
                         ></v-autocomplete>
                     </div>
-                    <v-btn block type="submit" color="indigo">Buscar</v-btn>
+                    <v-btn flat block type="submit" color="indigo">Buscar</v-btn>
                 </v-form>
             </div>
             <div v-if="document.length" class="py-5 text-center">
@@ -78,17 +83,24 @@
                                     v-if="resultsSearch.length" 
                                     @click="resultsSearch = [], searchOn = false" 
                                     variant="text" size="small" color="primary"
+                                    title="limpa os resultados da busca"
+                                    class="ml-1"
                                 >Limpar</v-btn>
                         </div>
                         <div class="btns2 pa-2">
-                            <v-btn
-                                variant="outlined"
-                                size="small"
-                                class="mr-2"
-                                @click="viewsAggs = !viewsAggs"
-                                title="Mudar visualização"
-                            ><v-icon>{{viewsAggs ?'mdi-file-document-multiple-outline':'mdi-file'}}</v-icon> </v-btn>
-                          
+                            <v-tooltip text="altera para uma página ou para todas as páginas agregadas por norma">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn
+                                        v-bind="props"
+                                        variant="outlined"
+                                        color="grey"
+                                        size="small"
+                                        class="mr-2"
+                                        @click="viewsAggs = !viewsAggs"
+                                        title="Mudar visualização"
+                                    ><v-icon>{{viewsAggs ?'mdi-file-document-multiple-outline':'mdi-file'}}</v-icon> </v-btn>
+                                </template>
+                            </v-tooltip>                                
                         </div>
                     </div>
                     <div v-if="resultsSearch.length">
@@ -100,11 +112,15 @@
                             >
                                 <div class="titles d-flex">
                                     <div>
-                                        <v-btn 
-                                            color="grey" variant="plain" 
-                                            :icon=" docExiste(res._id)?'mdi-delete':'mdi-content-copy'" title="copiar"
-                                            @click="inserirDoc(res)"
-                                        ></v-btn>
+                                        <v-tooltip text="caso nao exista, cria um documento temporário e insere essa página">
+                                            <template v-slot:activator="{ props }">
+                                                <v-btn 
+                                                    color="grey" variant="plain" 
+                                                    :icon=" docExiste(res._id)?'mdi-delete':'mdi-content-copy'" title="copiar"
+                                                    @click="inserirDoc(res)"
+                                                ></v-btn>
+                                            </template>
+                                        </v-tooltip>
                                     </div>
                                     <div>
                                         <p>{{res._source.page_to_norma.title}}</p>
@@ -113,7 +129,7 @@
                                 </div>   
                                 <div class="btns">
                                     <page :page="res._source" :searchP="search.text" />
-                                    <v-btn size="small" color="red" @click="openLaw(res)">PDF</v-btn>
+                                    <v-btn title="ver todo o documento" variant="tonal" size="small" color="red" @click="openLaw(res)">PDF</v-btn>
                                 </div>
                             </div>
                             <v-pagination 
@@ -212,6 +228,7 @@
                 const { valid } = await this.$refs.form.validate()
                 if(valid){
                     if(envSolici==1) generalStore.addListSearch(this.search)
+                    this.salvaNoBanco()
                     this.resultsSearch = []
                     this.searchOn = true
                     this.load = true
@@ -630,6 +647,20 @@
             openLaw(item){
                 let link = item._source.page_to_norma.parent
                 window.open(`text/${link}`, '_blank');
+            },
+            async salvaNoBanco(){
+                try {
+                    const response = await api.post("searchs_todo/_doc", {
+                        "text_search": this.search.text,
+                        "years": this.search.years,
+                        "sources": this.search.fonte,
+                        "precision": this.search.precision,
+                        "termos":  this.search.termo
+                    })
+                    console.log(response);
+                } catch (error) {
+                    console.log("error");
+                }
             }
         },
         created(){
