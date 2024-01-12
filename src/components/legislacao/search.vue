@@ -621,15 +621,11 @@
                 : false
             },
             recActive(){     
-                this.search = {
-                    text: this.$route.query.search,
-                    years: [],
-                    fonte: [],
-                    termo: 2,
-                    precision: false
-                }
+                let reqSearch = generalStore.readSearch
+                this.search = { ...reqSearch}
                 this.searchEnv(2)
                 generalStore.reqChange(false)
+                console.log("ta pegando");
             },
             openLaw(item){
                 let link = item._source.page_to_norma.parent
