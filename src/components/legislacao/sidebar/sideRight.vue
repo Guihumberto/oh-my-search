@@ -7,7 +7,12 @@
                 <v-btn variant="text"  @click="showBar = false" class="btnHidden mb-2" color="black" icon="mdi-chevron-right"></v-btn>
             </h3>
             <div class="content">
-                <v-card elevation="0" v-for="item, i in listSearchs" :key="i" class="mb-1" hover @click="searchAgain(item, i)">
+                <v-btn class="texr-center pa-0 ma-0" size="small" v-if="listSearchs.length > 1" @click="removeAll()" color="red" variant="text">Apagar tudo</v-btn>
+                <v-card 
+                    elevation="0" 
+                    v-for="item, i in listSearchs" :key="i" 
+                    class="mb-1" hover 
+                    @click="searchAgain(item, i)">
                     <v-card-text class="pa-2 d-flex align-center justify-space-between">
                         <div>
                             {{ item.text }} 
@@ -57,6 +62,9 @@
             },
             removeSearch(item){
                 generalStore.removeListSearch(item)
+            },
+            removeAll(){
+                generalStore.removeAll()
             }
         }
     }

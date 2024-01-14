@@ -40,12 +40,13 @@
                         <v-autocomplete
                             clearable
                             chips
-                            label="Fonte"
-                            :items="tipos"
+                            label="Fonte da norma"
+                            :items="tipos.sort()"
                             multiple
                             variant="outlined"
                             v-model="search.fonte"
                             closable-chips
+                            placeholder="Todas as fontes"
                         ></v-autocomplete>
                         <v-autocomplete
                             clearable
@@ -56,6 +57,7 @@
                             variant="outlined"
                             v-model="search.years"
                             closable-chips
+                            placeholder="Todo o período"
                         ></v-autocomplete>
                     </div>
                     <v-btn flat block type="submit" color="indigo">Buscar</v-btn>
@@ -112,11 +114,12 @@
                             >
                                 <div class="titles d-flex">
                                     <div>
-                                        <v-tooltip text="caso nao exista, cria um documento temporário e insere essa página">
+                                        <v-tooltip text="inserir página">
                                             <template v-slot:activator="{ props }">
                                                 <v-btn 
-                                                    color="grey" variant="plain" 
-                                                    :icon=" docExiste(res._id)?'mdi-delete':'mdi-content-copy'" title="copiar"
+                                                    :color="docExiste(res._id)?'red':'grey'" variant="plain" 
+                                                    :icon="docExiste(res._id)?'mdi-delete':'mdi-file-plus'" 
+                                                    :title="docExiste(res._id)?'excluir página': 'adicionar página'"
                                                     @click="inserirDoc(res)"
                                                 ></v-btn>
                                             </template>
@@ -148,6 +151,21 @@
                 </div>
             </div>
             <div class="spaceFooter my-16 py-16"></div>
+            <v-snackbar
+                v-model="snack.snackbar"
+                :timeout="snack.timeout"
+            >
+            {{ snack.text }}
+                <template v-slot:actions>
+                    <v-btn
+                    color="blue"
+                    variant="text"
+                    @click="snack.snackbar = false"
+                    >
+                    Close
+                    </v-btn>
+                </template>
+            </v-snackbar>
         </div>
     </section>
 </template>
@@ -210,7 +228,12 @@
                     qtd: 10,
                     page: 1
                 },
-                totalDocs: 0
+                totalDocs: 0,
+                snack: {
+                    snackbar: false,
+                    text: 'Nova página adicionada ao documento.',
+                    timeout: 2000
+                }
             }
         },
         computed:{
@@ -626,8 +649,12 @@
                 const res = this.docExiste(item._id)
                 if(res){
                     this.document = this.document.filter(x => x._id != res)
+                    this.snack.text = "Página Removida"
+                    this.snack.snackbar = true
                 }else {
                     this.document.push(item)
+                    this.snack.text = 'Nova página adicionada ao documento.',
+                    this.snack.snackbar = true
                 }
             },
             docExiste(item){

@@ -34,7 +34,7 @@
                             chips
                             label="Fonte"
                             density="compact"
-                            :items="fontes"
+                            :items="fontes.sort()"
                             multiple
                             variant="outlined"
                             v-model="search.fonte"

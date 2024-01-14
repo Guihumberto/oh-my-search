@@ -34,6 +34,9 @@ export const useGeneralStore = defineStore("General", {
         },
         removeListSearch(item){
             this.listSearch.splice(item, 1)
+        },
+        removeAll(){
+            this.listSearch = []
         }
     }
 })
