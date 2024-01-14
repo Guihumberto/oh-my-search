@@ -162,7 +162,7 @@
                     variant="text"
                     @click="snack.snackbar = false"
                     >
-                    Close
+                    X
                     </v-btn>
                 </template>
             </v-snackbar>
@@ -649,7 +649,7 @@
                 const res = this.docExiste(item._id)
                 if(res){
                     this.document = this.document.filter(x => x._id != res)
-                    this.snack.text = "Página Removida"
+                    this.snack.text = "Página Removida."
                     this.snack.snackbar = true
                 }else {
                     this.document.push(item)
