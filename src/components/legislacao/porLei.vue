@@ -34,7 +34,9 @@
                             chips
                             label="Fonte"
                             density="compact"
-                            :items="fontes.sort()"
+                            :items="tipos"
+                            item-value="nome"
+                            item-title="mudar"
                             multiple
                             variant="outlined"
                             v-model="search.fonte"
@@ -47,7 +49,7 @@
                             chips
                             label="Período"
                             density="compact"
-                            :items="periodo"
+                            :items="periodo.sort().reverse()"
                             multiple
                             variant="outlined"
                             v-model="search.years"
@@ -60,7 +62,7 @@
                     <v-expansion-panel
                     v-for="tipo, t in orgLaws" :key="t"
                     >
-                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ tipo.tipo }}</v-expansion-panel-title>
+                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ fonteNome(tipo.tipo).mudar }}</v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-expansion-panels variant="popout">
                             <v-expansion-panel
@@ -87,8 +89,10 @@
 
 <script>
     import api from "@/services/api"
+    import { nomeFonte } from '../../mixins/mixin'
     
     export default {
+        mixins:[nomeFonte],
         data(){
             return{ 
                 allLaw: [],
@@ -98,19 +102,6 @@
                     years: [],
                     fonte: []
                 },
-                periodo:[
-                    1984, 1985, 1986,1987, 1988, 1989,
-                    1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-                    2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-                    2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
-                    2020, 2021, 2022, 2023
-                ],
-                fontes:[
-                    "resolucoes", "portarias", "consultas", "leis-estaduais", "medidas-provisorias", "leis-federais",
-                    "editais", "portarias-conjuntas", "orientacao-tributaria", "beneficios", "instrucoes-normativas",
-                    "ato-declaratorio-interpretativo", "atos-declaratorios", "convenios", "decretos", "anexos-ricms", 
-                    "resolucoes", "ricms", "beneficios-fiscais"
-                ],
                 rules:{
                     required: (value) => !!value || "Campo obrigatório",
                     minname: (v) => (v||'').length >= 4 || "Mínimo 4 caracteres",

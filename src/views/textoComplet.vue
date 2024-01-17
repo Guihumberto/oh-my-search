@@ -8,8 +8,12 @@
             ></v-progress-circular>
         </div>
         <div class="container" v-else>
-            <div class="border pa-5 mb-2" v-for="item, i in listPage" :key="i">
-                <p class="font-weight-bold">{{ item.page_to_norma.title }} | Página: {{ item.num_page }} | {{ item.ano }}</p>
+            <v-btn variant="tonal" @click="voltar" class="mb-2">Voltar</v-btn>
+            <div class="border pa-5 mb-2 bg-white" v-for="item, i in listPage" :key="i">
+                <div class="font-weight-bold d-flex justify-space-between">
+                    <p >{{ item.page_to_norma.title }} | {{ item.ano }}</p> 
+                    <p>Página: {{ item.num_page }} </p>
+                </div>
                 <p v-html="item.text_page"></p> 
             </div>
         </div>
@@ -66,6 +70,9 @@
                     this.load = false
                 }
             },
+            voltar(){
+                this.$router.push("/leges");
+            }
         },
         created(){
             this.getAll()

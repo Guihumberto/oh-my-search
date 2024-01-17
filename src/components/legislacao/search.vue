@@ -41,7 +41,9 @@
                             clearable
                             chips
                             label="Fonte da norma"
-                            :items="tipos.sort()"
+                            :items="tipos"
+                            item-value="nome"
+                            item-title="mudar"
                             multiple
                             variant="outlined"
                             v-model="search.fonte"
@@ -52,7 +54,7 @@
                             clearable
                             chips
                             label="Período"
-                            :items="periodo"
+                            :items="periodo.sort().reverse()"
                             multiple
                             variant="outlined"
                             v-model="search.years"
@@ -90,7 +92,7 @@
                                 >Limpar</v-btn>
                         </div>
                         <div class="btns2 pa-2">
-                            <v-tooltip text="altera para uma página ou para todas as páginas agregadas por norma">
+                            <v-tooltip text="altera a forma de visualização">
                                 <template v-slot:activator="{ props }">
                                     <v-btn
                                         v-bind="props"
@@ -136,12 +138,13 @@
                                 </div>
                             </div>
                             <v-pagination 
+                                v-if="totalDocs > pagination.qtd"
                                 density="compact"
                                 class="my-5" 
                                 :total-visible="3"
                                 :length="Math.ceil(totalDocs/pagination.qtd)"
                                 v-model="pagination.page"
-                                @click="pagination.inicio=pagination.page*10-10, searchEnv(3)"
+                                @click="pagination.inicio=pagination.page*pagination.qtd-pagination.qtd, searchEnv(3)"
                             ></v-pagination>
                         </div>
                     </div>
@@ -178,10 +181,13 @@
     import docs from "@/components/legislacao/dialogs/document"
     import aggs from "@/components/legislacao/buscas/searchAggs"
 
+    import { nomeFonte } from '../../mixins/mixin'
+
     import { useGeneralStore } from '@/store/GeneralStore'
     const generalStore = useGeneralStore()  
 
     export default {
+        mixins:[nomeFonte],
         components:{
             page,
             allPages,
@@ -198,18 +204,6 @@
                     precision: false
                 },
                 searchOn: false,
-                periodo:[
-                    1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-                    2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
-                    2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
-                    2020, 2021, 2022, 2023
-                ],
-                tipos:[
-                    "resolucoes", "portarias", "consultas", "leis-estaduais", "medidas-provisorias", "leis-federais",
-                    "editais", "portarias-conjuntas", "orientacao-tributaria", "beneficios", "instrucoes-normativas",
-                    "ato-declaratorio-interpretativo", "atos-declaratorios", "convenios", "decretos", "anexos-ricms", 
-                    "resolucoes", "ricms", "beneficios-fiscais"
-                ],
                 termos:[
                     {id:2, name: "Qualquer palavra"},
                     {id:1, name: "Frase Exata"}
@@ -225,7 +219,7 @@
                 viewsAggs: false,
                 pagination:{
                     inicio: 0,
-                    qtd: 10,
+                    qtd: 20,
                     page: 1
                 },
                 totalDocs: 0,
