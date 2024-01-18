@@ -89,7 +89,6 @@
     import api from "@/services/api"
     
     export default {
-        mixins:[nomeFonte],
         data(){
             return{ 
                 allLaw: [],
