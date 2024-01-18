@@ -181,7 +181,7 @@
     import docs from "@/components/legislacao/dialogs/document"
     import aggs from "@/components/legislacao/buscas/searchAggs"
 
-    import { nomeFonte } from '../../mixins/mixin'
+    import { nomeFonte } from '@/mixins/mixin'
 
     import { useGeneralStore } from '@/store/GeneralStore'
     const generalStore = useGeneralStore()  

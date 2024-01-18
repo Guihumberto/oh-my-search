@@ -32,12 +32,8 @@ export const nomeFonte = {
     },
     methods: {
         fonteNome(item){
-            console.log("nomte", item);
             const tipo = this.tipos.find(x => x.nome == item)
             return tipo
-        },
-        ordenar(a, b){
-            return a.nome - b.nome
         }
     },
 }
