@@ -52,7 +52,7 @@
                             clearable
                             chips
                             label="Período"
-                            :items="periodo.sort().reverse()"
+                            :items="periodo"
                             multiple
                             variant="outlined"
                             v-model="search.years"
