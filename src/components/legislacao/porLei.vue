@@ -47,7 +47,7 @@
                             chips
                             label="Período"
                             density="compact"
-                            :items="periodo.sort().reverse()"
+                            :items="periodo"
                             multiple
                             variant="outlined"
                             v-model="search.years"
