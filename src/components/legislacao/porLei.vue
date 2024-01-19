@@ -107,7 +107,7 @@
                     minname: (v) => (v||'').length >= 4 || "Mínimo 4 caracteres",
                 },
                 load: false,
-                reverse: true
+                reverse: false
             }
         },
         props:{
