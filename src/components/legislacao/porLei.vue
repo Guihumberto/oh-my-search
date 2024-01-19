@@ -34,7 +34,9 @@
                             chips
                             label="Fonte"
                             density="compact"
-                            :items="fontes.sort()"
+                            :items="fontes"
+                            item-value="nome"
+                            item-title="mudar"
                             multiple
                             variant="outlined"
                             v-model="search.fonte"
@@ -100,12 +102,6 @@
                     years: [],
                     fonte: []
                 },
-                fontes:[
-                    "resolucoes", "portarias", "consultas", "leis-estaduais", "medidas-provisorias", "leis-federais",
-                    "editais", "portarias-conjuntas", "orientacao-tributaria", "beneficios", "instrucoes-normativas",
-                    "ato-declaratorio-interpretativo", "atos-declaratorios", "convenios", "decretos", "anexos-ricms", 
-                    "resolucoes", "ricms", "beneficios-fiscais"
-                ],
                 rules:{
                     required: (value) => !!value || "Campo obrigatório",
                     minname: (v) => (v||'').length >= 4 || "Mínimo 4 caracteres",
@@ -173,6 +169,10 @@
             },
             periodo(){
                 return generalStore.readPeriodo
+            },
+            fontes(){
+                const list = generalStore.readTipos
+                return list
             }
         },
         methods:{

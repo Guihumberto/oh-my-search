@@ -41,7 +41,9 @@
                             clearable
                             chips
                             label="Fonte da norma"
-                            :items="tipos.sort()"
+                            :items="fontes"
+                            item-value="nome"
+                            item-title="mudar"
                             multiple
                             variant="outlined"
                             v-model="search.fonte"
@@ -198,12 +200,6 @@
                     precision: false
                 },
                 searchOn: false,
-                tipos:[
-                    "resolucoes", "portarias", "consultas", "leis-estaduais", "medidas-provisorias", "leis-federais",
-                    "editais", "portarias-conjuntas", "orientacao-tributaria", "beneficios", "instrucoes-normativas",
-                    "ato-declaratorio-interpretativo", "atos-declaratorios", "convenios", "decretos", "anexos-ricms", 
-                    "resolucoes", "ricms", "beneficios-fiscais"
-                ],
                 termos:[
                     {id:2, name: "Qualquer palavra"},
                     {id:1, name: "Frase Exata"}
@@ -240,6 +236,10 @@
             },
             periodo(){
                 return generalStore.readPeriodo
+            },
+            fontes(){
+                const list = generalStore.readTipos
+                return list
             }
         },
         methods:{
