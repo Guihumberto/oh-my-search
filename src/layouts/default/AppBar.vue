@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="container">
-      <div class="logo">
+      <div class="logo" @click="$router.push('/')">
         <small class="text-white">Portal da</small>
         <h1 class="text-white">SEFAZ MA</h1>
       </div>
@@ -75,6 +75,16 @@ header h1{
 .menu {
   position: fixed;
   z-index: 1000;
+  transition: .5s ease;
+  animation: aparecer .8s ease;
+}
+@keyframes aparecer {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
 }
 .wrappersubheader{
   background: var(--primary-color);
@@ -103,6 +113,8 @@ header h1{
 }
 .logo{
   line-height: normal;
+  cursor: pointer;
+  user-select: none;
 }
 .navbar ul li {
   display: inline;

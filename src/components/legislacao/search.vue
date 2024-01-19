@@ -129,7 +129,7 @@
                                     </div>
                                     <div>
                                         <p>{{res._source.page_to_norma.title}}</p>
-                                        <small>Pág: {{ res._source.num_page }} | {{ res._source.tipo }} | {{ res._source.ano }} | <v-icon :color="relevancia(res._score).color" :icon="relevancia(res._score).icon" :title="res._score" /> </small>
+                                        <small>Pág: {{ res._source.num_page }} | {{ res._source.tipo }} | {{ res._source.ano }} | <v-icon :color="relevancia(res._score).color" :icon="relevancia(res._score).icon" :title="relevancia(res._score).title" /> </small>
                                     </div>
                                 </div>   
                                 <div class="btns">
@@ -695,15 +695,15 @@
             },
             relevancia(item){
                     if(item > 5){ 
-                        return {color: "blue", icon: "mdi-chevron-double-up"};
+                        return {color: "blue", icon: "mdi-chevron-double-up", title:"Muito relevante"};
                     } else if(item > 1){
-                        return {color: "blue", icon: "mdi-chevron-up"};
+                        return {color: "blue", icon: "mdi-chevron-up", title:"Relevante"};
                     } else if(item == 1){
-                        return {color: "grey", icon: "mdi-square"};
+                        return {color: "grey", icon: "mdi-square", title:"Moderado"};
                     } else if(item < 1){
-                        return {color: "red", icon: "mdi-chevron-down"};
+                        return {color: "red", icon: "mdi-chevron-down", title:"Pouco relevante"};
                     } else {
-                        return {color: "grey", icon: "mdi-square"}
+                        return {color: "grey", icon: "mdi-square", title:"moderado"}
                     }
             }
         },
