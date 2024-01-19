@@ -685,6 +685,10 @@
                 } catch (error) {
                     console.log("error");
                 }
+            },
+            nomeTipo(item){
+                let nome = generalStore.fonteNome(item)
+                return nome.mudar
             }
         },
         created(){

@@ -69,6 +69,10 @@ export const useGeneralStore = defineStore("General", {
         },
         removeAll(){
             this.listSearch = []
-        }
+        },
+        fonteNome(item){
+            const tipo = this.tipos.find(x => x.nome == item)
+            return tipo
+        },
     }
 })

@@ -5,7 +5,7 @@
             <div v-for="item, i in allSearchResultas" :key="i">
                 <div>
                     <div>
-                        <h3 class="font-weight-bold">{{ item.tipo }}</h3>
+                        <h3 class="font-weight-bold">{{ nomeTipo(item.tipo).mudar }}</h3>
                         <div class="d-flex justify-space-between py-2 ml-3" v-for="lei, l in item.subcategorias" :key="l">
                             <h4>{{ lei.title }} - {{ lei.ano }}</h4>
                             <div class="btns">
@@ -22,6 +22,9 @@
 
 <script>
     import aggspage from './pageAggs.vue'
+
+    import { useGeneralStore } from '@/store/GeneralStore'
+    const generalStore = useGeneralStore() 
 
     export default {
         data(){
@@ -81,6 +84,11 @@
             openLaw(item){
                 let link = item.parent
                 window.open(`text/${link}`, '_blank');
+            },
+            nomeTipo(item){
+                let nome = generalStore.fonteNome(item)
+                console.log(nome);
+                return nome
             }
         }
     }

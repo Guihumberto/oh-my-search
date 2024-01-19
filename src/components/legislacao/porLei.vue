@@ -62,7 +62,7 @@
                     <v-expansion-panel
                     v-for="tipo, t in orgLaws" :key="t"
                     >
-                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ tipo.tipo }}</v-expansion-panel-title>
+                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{nomeTipo(tipo.tipo) }}</v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-expansion-panels variant="popout">
                             <v-expansion-panel
@@ -190,8 +190,11 @@
                 }finally{
                     this.load = false
                 }
-               
             },
+            nomeTipo(item){
+                let nome = generalStore.fonteNome(item)
+                return nome.mudar
+            }
         },
         created(){
             this.getAll()
