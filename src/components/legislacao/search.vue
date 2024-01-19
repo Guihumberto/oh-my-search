@@ -143,7 +143,7 @@
                                 :total-visible="3"
                                 :length="Math.ceil(totalDocs/pagination.qtd)"
                                 v-model="pagination.page"
-                                @click="pagination.inicio=pagination.page*10-10, searchEnv(3)"
+                                @click="pagination.inicio=pagination.page*pagination.qtd-pagination.qtd, searchEnv(3)"
                             ></v-pagination>
                         </div>
                     </div>
@@ -215,7 +215,7 @@
                 viewsAggs: false,
                 pagination:{
                     inicio: 0,
-                    qtd: 10,
+                    qtd: 20,
                     page: 1
                 },
                 totalDocs: 0,
@@ -681,7 +681,6 @@
                         "precision": this.search.precision,
                         "termos":  this.search.termo
                     })
-                    console.log(response);
                 } catch (error) {
                     console.log("error");
                 }

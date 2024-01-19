@@ -87,7 +87,6 @@
             },
             nomeTipo(item){
                 let nome = generalStore.fonteNome(item)
-                console.log(nome);
                 return nome
             }
         }
