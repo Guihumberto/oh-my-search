@@ -139,6 +139,7 @@
                             </div>
                             <v-pagination 
                                 density="compact"
+                                v-if="totalDocs > 20"
                                 class="my-5" 
                                 :total-visible="3"
                                 :length="Math.ceil(totalDocs/pagination.qtd)"
@@ -666,7 +667,6 @@
                 this.search = { ...reqSearch}
                 this.searchEnv(2)
                 generalStore.reqChange(false)
-                console.log("ta pegando");
             },
             openLaw(item){
                 let link = item._source.page_to_norma.parent
