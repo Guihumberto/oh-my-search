@@ -1,6 +1,6 @@
 <template>
     <section>
-        <div class="container">
+        <div class="container" id="container">
             <div class="d-flex justify-space-between">
                 <div>{{ reqRead }}</div> 
                 <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
@@ -129,7 +129,7 @@
                                     </div>
                                     <div>
                                         <p>{{res._source.page_to_norma.title}}</p>
-                                        <small>Pág: {{ res._source.num_page }} | {{ res._source.tipo }} | {{ res._source.ano }}</small>
+                                        <small>Pág: {{ res._source.num_page }} | {{ res._source.tipo }} | {{ res._source.ano }} | <v-icon :color="relevancia(res._score).color" :icon="relevancia(res._score).icon" :title="res._score" /> </small>
                                     </div>
                                 </div>   
                                 <div class="btns">
@@ -688,10 +688,30 @@
             nomeTipo(item){
                 let nome = generalStore.fonteNome(item)
                 return nome.mudar
+            },
+            deslocarTela(item){
+                const element = document.getElementById(item)
+                element.scrollIntoView({behavior: "smooth"})
+            },
+            relevancia(item){
+                    if(item > 5){ 
+                        return {color: "blue", icon: "mdi-chevron-double-up"};
+                    } else if(item > 1){
+                        return {color: "blue", icon: "mdi-chevron-up"};
+                    } else if(item == 1){
+                        return {color: "grey", icon: "mdi-square"};
+                    } else if(item < 1){
+                        return {color: "red", icon: "mdi-chevron-down"};
+                    } else {
+                        return {color: "grey", icon: "mdi-square"}
+                    }
             }
         },
         created(){
             // this.getAll()
+        },
+        mounted(){
+            this.deslocarTela("pri-hea")
         }
     }
 </script>
