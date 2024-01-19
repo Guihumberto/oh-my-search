@@ -3,7 +3,10 @@
         <div class="container" id="container">
             <div class="d-flex justify-space-between">
                 <div>{{ reqRead }}</div> 
-                <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
+                <div class="d-flex">
+                    <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
+                    <help class="ml-2" />
+                </div>
             </div>
             <small>Busca por termos, frases, fonte, periodo e mais</small>
             <h2 class="spaceh2">Busca na legislação</h2>
@@ -180,6 +183,7 @@
     import allPages from "@/components/legislacao/dialogs/allPages"
     import docs from "@/components/legislacao/dialogs/document"
     import aggs from "@/components/legislacao/buscas/searchAggs"
+    import help from "./dialogs/help.vue"
 
     import { useGeneralStore } from '@/store/GeneralStore'
     const generalStore = useGeneralStore()  
@@ -189,7 +193,8 @@
             page,
             allPages,
             docs,
-            aggs
+            aggs,
+            help
         },
         data(){
             return{
