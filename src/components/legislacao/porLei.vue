@@ -62,11 +62,11 @@
                     <v-expansion-panel
                     v-for="tipo, t in orgLaws" :key="t"
                     >
-                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{nomeTipo(tipo.tipo) }}</v-expansion-panel-title>
+                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ nomeTipo(tipo.tipo) }}</v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-expansion-panels variant="popout">
                             <v-expansion-panel
-                                v-for="ano, a in tipo.subcategorias" :key="a" >
+                                v-for="ano, a in tipo.subcategorias.sort(order)" :key="a" >
                                 <v-expansion-panel-title>{{ ano.ano }}</v-expansion-panel-title>
                                 <v-expansion-panel-text>
                                     <div class="even-columns">
@@ -106,7 +106,8 @@
                     required: (value) => !!value || "Campo obrigatório",
                     minname: (v) => (v||'').length >= 4 || "Mínimo 4 caracteres",
                 },
-                load: false
+                load: false,
+                reverse: true
             }
         },
         props:{
@@ -194,7 +195,12 @@
             nomeTipo(item){
                 let nome = generalStore.fonteNome(item)
                 return nome.mudar
-            }
+            },
+            order(a, b){
+                return this.reverse
+                    ? a.ano -  b.ano
+                    : b.ano -  a.ano
+            },
         },
         created(){
             this.getAll()
