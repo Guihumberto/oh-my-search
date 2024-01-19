@@ -717,6 +717,9 @@
 </script>
 
 <style  scoped>
+section{
+    transition: all .8s ease;
+}
 .container{
     min-height: 60vh;
 }

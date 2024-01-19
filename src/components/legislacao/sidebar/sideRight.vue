@@ -77,6 +77,15 @@
     height: 100vh;
     background: rgb(235, 233, 233);
     padding: .5rem;
+    animation: slideLeft 1s ease;
+}
+@keyframes slideLeft {
+    0%{
+        transform: translateX(300px);
+    }
+    100%{
+        transform: translateX(0);
+    }
 }
 @media (max-width: 700px) {
     .sideRight{
