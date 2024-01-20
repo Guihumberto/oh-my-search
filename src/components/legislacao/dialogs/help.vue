@@ -30,7 +30,7 @@
     data () {
       return {
         dialog: false,
-        questions:[
+        questionsPorTemos:[
           {
             id: 1, 
             question: "Como funciona?",
@@ -66,9 +66,33 @@
             question: "Histórico das buscas",
             answer: "As buscas realizadas serão armazenadas temporariamente na barra lateral esquerda com todos os atributos que foram marcados. o Histórico da busca é apagado ao atualizar a página ou fechar o navegador."
           }
+        ],
+        questionsPorLei:[
+          {
+            id: 1,
+            question:"Busca por lei",
+            answer: "Digite o nome ou número da norma no campo buscar ou clique na fonte correspondente para expandir e localizar a norma por ano."
+          },
+          {
+            id: 2,
+            question:"Restringir a busca",
+            answer: "Selecione a Fonte e/ou período para restringir os resultados da busca. O campo 'Buscar' não é obrigatório. A seleção exibirá apenas os resultados correspondentes."
+          },
         ]
       }
     },
+    props:{
+      idHelp: Number
+    },
+    computed:{
+      questions(){
+        if(this.idHelp == 2){
+          return this.questionsPorLei
+        } else {
+          return this.questionsPorTemos
+        }
+      }
+    }
   }
 </script>
 

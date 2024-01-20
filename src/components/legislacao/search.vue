@@ -5,7 +5,7 @@
                 <div>{{ reqRead }}</div> 
                 <div class="d-flex align-center">
                     <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
-                    <help class="ml-2" />
+                    <help :idHelp="1" class="ml-2" />
                 </div>
             </div>
             <small>Busca por termos, frases, fonte, periodo e mais</small>

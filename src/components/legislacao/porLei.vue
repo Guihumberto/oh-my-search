@@ -7,7 +7,7 @@
                 </div>
                 <div class="d-flex align-center">
                     <router-link to="/leges" class="linkTO">Busca por termo</router-link>
-                    <help class="ml-2" />
+                    <help :idHelp="2" class="ml-2" />
                 </div>
                
             </div>
