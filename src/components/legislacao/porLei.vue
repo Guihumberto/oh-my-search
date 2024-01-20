@@ -5,7 +5,11 @@
                 <div>
                     Home
                 </div>
-                <router-link to="/leges" class="linkTO">Busca por termo</router-link>
+                <div class="d-flex align-center">
+                    <router-link to="/leges" class="linkTO">Busca por termo</router-link>
+                    <help class="ml-2" />
+                </div>
+               
             </div>
             <div v-if="load" class="load">
                 <v-progress-circular
@@ -91,8 +95,13 @@
     import api from "@/services/api"
     import { useGeneralStore } from '@/store/GeneralStore'
     const generalStore = useGeneralStore()  
+
+    import help from "./dialogs/help.vue"
     
     export default {
+        components:{
+            help
+        },
         data(){
             return{ 
                 allLaw: [],

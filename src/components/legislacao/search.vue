@@ -3,7 +3,7 @@
         <div class="container" id="container">
             <div class="d-flex justify-space-between">
                 <div>{{ reqRead }}</div> 
-                <div class="d-flex">
+                <div class="d-flex align-center">
                     <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
                     <help class="ml-2" />
                 </div>
