@@ -26,6 +26,11 @@ const routes = [
         name: 'Legislacaoporlei',
         component: () => import('@/views/LegesPorLei.vue'),
       },
+      {
+        path: '/textpage/:id',
+        name: 'Page',
+        component: () => import('@/views/textPage.vue'),
+      },
     ],
   },
 ]

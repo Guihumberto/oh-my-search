@@ -136,6 +136,7 @@
                                     </div>
                                 </div>   
                                 <div class="btns">
+                                    <menuCopy :page="res._id" />
                                     <page :page="res._source" :searchP="search.text" />
                                     <v-btn title="ver todo o documento" variant="tonal" size="small" color="red" @click="openLaw(res)">PDF</v-btn>
                                 </div>
@@ -184,6 +185,7 @@
     import docs from "@/components/legislacao/dialogs/document"
     import aggs from "@/components/legislacao/buscas/searchAggs"
     import help from "./dialogs/help.vue"
+    import menuCopy from '@/components/legislacao/dialogs/menuCopy.vue'
 
     import { useGeneralStore } from '@/store/GeneralStore'
     const generalStore = useGeneralStore()  
@@ -194,7 +196,8 @@
             allPages,
             docs,
             aggs,
-            help
+            help,
+            menuCopy
         },
         data(){
             return{
@@ -746,6 +749,7 @@ section{
 }
 .oneresult .btns{
     display: flex;
+    align-items: center;
     gap: .5rem;
 }
 .title{
