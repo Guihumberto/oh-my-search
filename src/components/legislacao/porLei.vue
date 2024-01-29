@@ -64,7 +64,7 @@
                 Total de normas: {{ qtdLaws }} <br>
                 <v-expansion-panels>
                     <v-expansion-panel
-                    v-for="tipo, t in orgLaws" :key="t"
+                    v-for="tipo, t in orgLaws.sort(orderTipo)" :key="t"
                     >
                     <v-expansion-panel-title 
                         expand-icon="mdi-plus" collapse-icon="mdi-minus">
@@ -74,7 +74,7 @@
                         <v-expansion-panels variant="popout">
                             <v-expansion-panel
                                 v-for="ano, a in tipo.subcategorias.sort(order)" :key="a" >
-                                <v-expansion-panel-title>{{ ano.ano }} </v-expansion-panel-title>
+                                <v-expansion-panel-title>{{ ano.ano }} - {{ano.norma.length }}</v-expansion-panel-title>
                                 <v-expansion-panel-text>
                                     <div class="even-columns">
                                         <div   v-for="law, l in ano.norma.sort(orderName)" :key="l">
@@ -217,6 +217,11 @@
                 return this.reverse
                     ? a.title -  b.title
                     : b.title -  a.title
+            },
+            orderTipo(a, b){
+                return this.reverse
+                    ? a.tipo -  b.tipo
+                    : b.tipo -  a.tipo
             },
         },
         created(){
