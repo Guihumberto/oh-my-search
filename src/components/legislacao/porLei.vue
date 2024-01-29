@@ -74,7 +74,7 @@
                         <v-expansion-panels variant="popout">
                             <v-expansion-panel
                                 v-for="ano, a in tipo.subcategorias.sort(order)" :key="a" >
-                                <v-expansion-panel-title>{{ ano.ano }} - {{ano.norma.length }}</v-expansion-panel-title>
+                                <v-expansion-panel-title>{{ ano.ano }} </v-expansion-panel-title>
                                 <v-expansion-panel-text>
                                     <div class="even-columns">
                                         <div   v-for="law, l in ano.norma.sort(orderName)" :key="l">
