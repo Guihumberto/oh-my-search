@@ -66,15 +66,18 @@
                     <v-expansion-panel
                     v-for="tipo, t in orgLaws" :key="t"
                     >
-                    <v-expansion-panel-title expand-icon="mdi-plus" collapse-icon="mdi-minus">{{ nomeTipo(tipo.tipo) }}</v-expansion-panel-title>
+                    <v-expansion-panel-title 
+                        expand-icon="mdi-plus" collapse-icon="mdi-minus">
+                        {{ nomeTipo(tipo.tipo) }}
+                    </v-expansion-panel-title>
                     <v-expansion-panel-text>
                         <v-expansion-panels variant="popout">
                             <v-expansion-panel
                                 v-for="ano, a in tipo.subcategorias.sort(order)" :key="a" >
-                                <v-expansion-panel-title>{{ ano.ano }}</v-expansion-panel-title>
+                                <v-expansion-panel-title>{{ ano.ano }} </v-expansion-panel-title>
                                 <v-expansion-panel-text>
                                     <div class="even-columns">
-                                        <div   v-for="law, l in ano.norma" :key="l">
+                                        <div   v-for="law, l in ano.norma.sort(orderName)" :key="l">
                                             <a class="openLaw" :href="`text/${law.id}`" target="_blank">{{ law.title }}</a>
                                         </div>
                                     </div>
@@ -209,6 +212,11 @@
                 return this.reverse
                     ? a.ano -  b.ano
                     : b.ano -  a.ano
+            },
+            orderName(a, b){
+                return this.reverse
+                    ? a.title -  b.title
+                    : b.title -  a.title
             },
         },
         created(){

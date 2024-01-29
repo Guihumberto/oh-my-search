@@ -12,7 +12,7 @@
             <div class="border pa-5 mb-2 bg-white" v-for="item, i in listPage" :key="i">
                 <div class="font-weight-bold d-flex justify-space-between">
                     <p >{{ item.page_to_norma.title }} | {{ item.ano }}</p> 
-                    <p>Página: {{ item.num_page }} </p>
+                    <p>Página: {{ item.num_page }}/{{ listPage.length }} </p>
                 </div>
                 <p v-html="item.text_page"></p> 
             </div>
