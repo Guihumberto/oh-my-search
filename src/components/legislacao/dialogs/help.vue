@@ -10,7 +10,8 @@
           activator="parent"
           width="auto"
         >
-          <v-card title="Ajuda" max-width="800">
+          <v-card max-width="800">
+            <v-card-title class="bg-primary">MANUAL</v-card-title>
             <v-card-text>
               <div class="questions" v-for="item, i in questions" :key="i">
                 <h3>{{ item.question }}</h3>
@@ -98,10 +99,10 @@
 
 <style scoped>
 .questions h3{
-  font-weight: 600;
-  font-size: 1.8rem;
+  font-weight: 500;
+  font-size: 1.5rem;
 }
 .questions p{
-  padding: .3rem .5rem;
+  padding: .3rem .1rem;
 }
 </style>
