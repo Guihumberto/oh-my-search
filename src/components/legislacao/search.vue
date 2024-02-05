@@ -1,15 +1,17 @@
 <template>
     <section>
         <div class="container" id="container">
-            <div class="d-flex justify-space-between">
+            <div class="headSearch">
                 <div>{{ reqRead }}</div> 
                 <div class="d-flex align-center">
                     <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
                     <help :idHelp="1" class="ml-2" />
                 </div>
             </div>
-            <small>Busca por termos, frases, fonte, periodo e mais</small>
-            <h2 class="spaceh2">Busca na legislação</h2>
+            <div class="headSearchTwo">
+                <small>Busca por termos, frases, fonte, periodo e mais</small>
+                <h2 class="spaceh2">Busca na legislação</h2>
+            </div>
             <div class="content">
                 <v-form @submit.prevent="searchEnv(1)" ref="form">
                     <v-text-field
@@ -112,7 +114,7 @@
                     </div>
                     <div v-if="resultsSearch.length">
                         <aggs :searchResults="resultsSearch" v-if="viewsAggs"/>
-                        <div class="pa-3" v-else>
+                        <div class="lineResult" v-else>
                             <div 
                                 v-for="res, r in resultsSearch" :key="r"
                                 class="py-3 oneresult"    
@@ -731,6 +733,19 @@ section{
 .container{
     min-height: 60vh;
 }
+.headSearch{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideTopSearch .5s ease-in;
+}
+.headSearchTwo{
+    animation: slideTopSearch 1s ease-in;
+}
+.content{
+    animation: slideTopSearch 1.5s ease-in;
+}
+
 .radios, .autocompletes{
     display: flex;
     justify-content: space-between;
@@ -741,6 +756,18 @@ section{
     display: flex;
     justify-content: end;
     align-items: self-start;
+}
+.lineResult{
+    padding: 3px;
+    animation: slideTopSearch .5s ease-in;
+}
+@keyframes slideTopSearch {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
 .oneresult{
     display: flex;

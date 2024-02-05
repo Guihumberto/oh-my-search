@@ -61,34 +61,38 @@
                         ></v-autocomplete>
                     </div>
                 </div>
-                Total de normas: {{ qtdLaws }} <br>
-                <v-expansion-panels>
-                    <v-expansion-panel
-                    v-for="tipo, t in orgLaws.sort(orderTipo)" :key="t"
-                    >
-                    <v-expansion-panel-title 
-                        expand-icon="mdi-plus" collapse-icon="mdi-minus">
-                        {{ nomeTipo(tipo.tipo) }}
-                    </v-expansion-panel-title>
-                    <v-expansion-panel-text>
-                        <v-expansion-panels variant="popout">
-                            <v-expansion-panel
-                                v-for="ano, a in tipo.subcategorias.sort(order)" :key="a" >
-                                <v-expansion-panel-title>{{ ano.ano }} </v-expansion-panel-title>
-                                <v-expansion-panel-text>
-                                    <div class="even-columns">
-                                        <div   v-for="law, l in ano.norma.sort(orderName)" :key="l">
-                                            <a class="openLaw" :href="`text/${law.id}`" target="_blank">{{ law.title }}</a>
+                <div class="d-flex justify-end">
+                    <small>Total de normas: {{ qtdLaws }}</small>
+                </div>
+                <div class="allLaws">
+                    <v-expansion-panels>
+                        <v-expansion-panel
+                            v-for="tipo, t in orgLaws.sort(orderTipo)" :key="t"
+                        >
+                        <v-expansion-panel-title 
+                            expand-icon="mdi-plus" collapse-icon="mdi-minus">
+                            {{ nomeTipo(tipo.tipo) }}
+                        </v-expansion-panel-title>
+                        <v-expansion-panel-text>
+                            <v-expansion-panels variant="popout">
+                                <v-expansion-panel
+                                    v-for="ano, a in tipo.subcategorias.sort(order)" :key="a" >
+                                    <v-expansion-panel-title>{{ ano.ano }} </v-expansion-panel-title>
+                                    <v-expansion-panel-text>
+                                        <div class="even-columns">
+                                            <div   v-for="law, l in ano.norma.sort(orderName)" :key="l">
+                                                <a class="openLaw" :href="`text/${law.id}`" target="_blank">{{ law.title }}</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </v-expansion-panel-text>
-                            </v-expansion-panel>
-                        </v-expansion-panels>
-        
-                    </v-expansion-panel-text>
-        
-                    </v-expansion-panel>
-                </v-expansion-panels>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+            
+                        </v-expansion-panel-text>
+            
+                        </v-expansion-panel>
+                    </v-expansion-panels>
+                </div>
             </div>
         </div>
     </section>
@@ -231,6 +235,9 @@
 </script>
 
 <style lang="scss" scoped>
+.container{
+    min-height: 60vh;
+}
 .load{
     height: 60vh;
     display: flex;
@@ -273,6 +280,20 @@
 .linkTO:hover{
     color: rgb(120, 144, 83);
     background: rgb(227, 235, 216);
+}
+.legislacao{
+    animation: slideTopSearch .5s ease-in;
+}
+.allLaws{
+    animation: slideTopSearch .8s ease-in;
+}
+@keyframes slideTopSearch {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
 @media (max-width: 500px) {
     .radios{
