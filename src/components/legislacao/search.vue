@@ -97,7 +97,7 @@
                                 >Limpar</v-btn>
                         </div>
                         <div class="btns2 pa-2">
-                            <v-tooltip text="altera para uma página ou para todas as páginas agregadas por norma">
+                            <v-tooltip text="Ativar/desativar a visualização da página">
                                 <template v-slot:activator="{ props }">
                                     <v-btn
                                         v-bind="props"
