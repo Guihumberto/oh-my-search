@@ -1,12 +1,22 @@
 <template>
      <section>
         <div class="container">
+            <div v-if="load" class="load">
+                <v-progress-circular
+                        :size="50"
+                        color="primary"
+                        indeterminate
+                    ></v-progress-circular>
+            </div>
             <v-card
                 class="mx-auto"
+                variant="outlined"
+                color="grey"
+                v-else
             >
-                <v-toolbar color="cyan-lighten-1">
+                <v-toolbar color="#050451">
 
-                    <v-toolbar-title>Atualizações recente na legislação</v-toolbar-title>
+                    <v-toolbar-title>Adicionados recentemente</v-toolbar-title>
 
                     <v-spacer></v-spacer>
 
@@ -14,17 +24,31 @@
                 </v-toolbar>
 
                 <v-list
-                    :items="items"
-                    item-props
-                    lines="four"
+                    lines="two"
+                    class="pa-0"
                 >
-                <template v-slot:prepend>
-                        <v-icon color="grey">mdi-text-box</v-icon>
-        
-                </template>
-                    <template v-slot:subtitle="{ subtitle }">
-                        <div v-html="subtitle"></div>
+                  <v-list-item 
+                    link 
+                    v-for="item, i in allLaw" :key="i"
+                  >
+                    <template v-slot:prepend>
+                      <v-avatar color="grey-lighten-1">
+                        <v-icon color="white">mdi-file</v-icon>
+                      </v-avatar>
                     </template>
+                    <v-list-item-title>
+                      {{ item._source.title }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      {{ item._source.data_include }}
+                    </v-list-item-subtitle>
+                    <template v-slot:append>
+                      <a class="openLaw" :href="`text/${item._source.id}`" target="_blank"><v-icon color="primary" class="border">mdi-arrow-right</v-icon></a>
+                    </template>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-btn disabled block variant="text" color="primary">Ver mais</v-btn>
+                  </v-list-item>
                 </v-list>
             </v-card>
         </div>
@@ -32,45 +56,44 @@
 </template>
 
 <script>
+  import api from "@/services/api"
   export default {
     data: () => ({
-      items: [
-        { type: 'subheader', title: 'esta semana' },
-        {
-          prependAvatar: 'mdi-alpha-a-box',
-          title: 'lorem ypsulom?',
-          subtitle: `<span class="text-primary">Lei 10/2030</span> &mdash; Lorem ipsum dolor sit amet. Eos obcaecati molestias eum sunt nostrum sed quia veritatis est internos fugiat hic inventore quia non omnis necessitatibus aut quisquam quasi. Aut officiis porro quo autem dolor qui quibusdam inventore qui nesciunt fugit. Ut nostrum error et corporis asperiores est voluptatum esse ex impedit alias et magnam porro 33 quos omnis.`,
-        },
-        { type: 'divider', inset: true },
-        {
-          prependAvatar: 'mdi-alpha-a-box',
-          title: 'lorem ypsulom',
-          subtitle: `<span class="text-primary">Portaria 1010/2024</span> &mdash; Lorem ipsum dolor sit amet. Eos obcaecati molestias eum sunt nostrum sed quia veritatis est internos fugiat hic inventore quia non omnis necessitatibus aut quisquam quasi. Aut officiis porro quo autem dolor qui quibusdam inventore qui nesciunt fugit. Ut nostrum error et corporis asperiores est voluptatum esse ex impedit alias et magnam porro 33 quos omnis..`,
-        },
-        { type: 'divider', inset: true },
-        {
-          prependAvatar: 'mdi-alpha-a-box',
-          title: 'lorem ypsulom',
-          subtitle: '<span class="text-primary">Medida Provisória</span> &mdash; Lorem ipsum dolor sit amet. Eos obcaecati molestias eum sunt nostrum sed quia veritatis est internos fugiat hic inventore quia non omnis necessitatibus aut quisquam quasi. Aut officiis porro quo autem dolor qui quibusdam inventore qui nesciunt fugit. Ut nostrum error et corporis asperiores est voluptatum esse ex impedit alias et magnam porro 33 quos omnis.',
-        },
-        { type: 'divider', inset: true },
-        {
-          prependAvatar: 'mdi-alpha-a-box',
-          title: 'lorem ypsulom',
-          subtitle: '<span class="text-primary">Portaria</span> &mdash; Lorem ipsum dolor sit amet. Eos obcaecati molestias eum sunt nostrum sed quia veritatis est internos fugiat hic inventore quia non omnis necessitatibus aut quisquam quasi. Aut officiis porro quo autem dolor qui quibusdam inventore qui nesciunt fugit. Ut nostrum error et corporis asperiores est voluptatum esse ex impedit alias et magnam porro 33 quos omnis.',
-        },
-        { type: 'divider', inset: true },
-        {
-          prependAvatar: 'mdi-alpha-a-box',
-          title: 'lorem ypsulom',
-          subtitle: 'Jan 20, 2014',
-          subtitle: '<span class="text-primary">REsolução</span> &mdash; Lorem ipsum dolor sit amet. Eos obcaecati molestias eum sunt nostrum sed quia veritatis est internos fugiat hic inventore quia non omnis necessitatibus aut quisquam quasi. Aut officiis porro quo autem dolor qui quibusdam inventore qui nesciunt fugit. Ut nostrum error et corporis asperiores est voluptatum esse ex impedit alias et magnam porro 33 quos omnis.',
-        },
-      ],
+      load: false,
+      allLaw: [],
+      qtdLaws: 0,
     }),
+    methods:{
+      async getAll(){
+                try {
+                    this.load = true
+                    const response = await api.post("laws_v2/_search", {
+                    query:{
+                      exists: {
+                        field: "data_include"
+                      }
+                    }
+                })
+                this.allLaw = response.data.hits.hits
+                this.qtdLaws = response.data.hits.total.value
+                } catch (error) {
+                    console.log("error");
+                }finally{
+                    this.load = false
+                }
+            },
+    },
+    created(){
+            this.getAll()
+    }
   }
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.load{
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>
