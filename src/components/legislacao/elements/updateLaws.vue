@@ -29,7 +29,7 @@
                 >
                   <v-list-item 
                     link 
-                    v-for="item, i in allLaw" :key="i"
+                    v-for="item, i in allLaw.sort(orderName)" :key="i"
                   >
                     <template v-slot:prepend>
                       <v-avatar color="grey-lighten-1">
@@ -62,26 +62,32 @@
       load: false,
       allLaw: [],
       qtdLaws: 0,
+      reverse: false
     }),
     methods:{
       async getAll(){
-                try {
-                    this.load = true
-                    const response = await api.post("laws_v2/_search", {
-                    query:{
-                      exists: {
-                        field: "data_include"
-                      }
-                    }
-                })
-                this.allLaw = response.data.hits.hits
-                this.qtdLaws = response.data.hits.total.value
-                } catch (error) {
-                    console.log("error");
-                }finally{
-                    this.load = false
+          try {
+              this.load = true
+              const response = await api.post("laws_v2/_search", {
+              query:{
+                exists: {
+                  field: "data_include"
                 }
-            },
+              }
+          })
+          this.allLaw = response.data.hits.hits
+          this.qtdLaws = response.data.hits.total.value
+          } catch (error) {
+              console.log("error");
+          }finally{
+              this.load = false
+          }
+      },
+      orderName(a, b){
+          return this.reverse
+              ? a._source.title -  b._source.title
+              : b._source.title -  a._source.title
+      },
     },
     created(){
             this.getAll()

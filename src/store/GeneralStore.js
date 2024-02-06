@@ -11,6 +11,7 @@ export const useGeneralStore = defineStore("General", {
             2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 
             1988, 1987, 1986, 1985, 1984
         ],
+        noShowNews: true,
         tipos:[
             {nome:"anexos-ricms", mudar: "Anexos RICMS", sigla:"Anexos"}, 
             {nome:"ato-declaratorio-interpretativo", mudar: "Ato Declaratório Interpretativo", sigla:"ADI"}, 
@@ -47,6 +48,9 @@ export const useGeneralStore = defineStore("General", {
         },
         readTipos(){
             return this.tipos
+        },
+        readShowNews(){
+            return this.noShowNews
         }
     },
     actions:{
@@ -74,5 +78,8 @@ export const useGeneralStore = defineStore("General", {
             const tipo = this.tipos.find(x => x.nome == item)
             return tipo
         },
+        changeShowsNews(item){
+            this.noShowNews = item
+        }
     }
 })

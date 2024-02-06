@@ -176,6 +176,7 @@
                 </div>
             </div>
             <div class="spaceFooter my-16 py-16"></div>
+            <news />
             <v-snackbar
                 v-model="snack.snackbar"
                 :timeout="snack.timeout"
@@ -205,6 +206,7 @@
     import help from "./dialogs/help.vue"
     import menuCopy from '@/components/legislacao/dialogs/menuCopy.vue'
     import resumoSearch from '@/components/legislacao/elements/resumoSearch'
+    import news from "@/components/legislacao/dialogs/news.vue"
 
     import { useGeneralStore } from '@/store/GeneralStore'
     const generalStore = useGeneralStore()  
@@ -217,7 +219,8 @@
             aggs,
             help,
             menuCopy,
-            resumoSearch
+            resumoSearch,
+            news
         },
         data(){
             return{
