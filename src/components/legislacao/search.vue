@@ -10,29 +10,26 @@
             </div>
             <div class="headSearchTwo">
                 <small>Busca por termos, frases, fonte, periodo e mais</small>
-                <h2 class="spaceh2">Busca na legislação</h2>
+                <h2 class="mb-4">Busca na legislação</h2>
             </div>
             <div class="content">
                 <v-form @submit.prevent="searchEnv(1)" ref="form">
-                    <v-text-field
-                        clearable
-                        label="Busca"
-                        placeholder="Digite um ou mais termos ou frase exata"
-                        prepend-inner-icon="mdi-magnify"
-                        variant="outlined"
-                        v-model.trim="search.text"
-                        :rules="[rules.required, rules.minname]"
-                    ></v-text-field>
-                    <div class="radios">
-                        <v-radio-group inline color="indigo" v-model="search.termo">
-                            <v-radio 
-                                v-for="item, i in termos" :key="i" 
-                                :label="item.name" :value="item.id">
-                            </v-radio>
-                        </v-radio-group>
+                    <div class="line1">
+                        <v-text-field
+                            density="compact"
+                            class="textSearch"
+                            clearable
+                            label="Busca"
+                            placeholder="Digite um ou mais termos ou frase exata"
+                            prepend-inner-icon="mdi-magnify"
+                            variant="outlined"
+                            v-model.trim="search.text"
+                            :rules="[rules.required, rules.minname]"
+                        ></v-text-field>
                         <v-tooltip text="Limita a quantidade do resultado para os mais relevantes">
                             <template v-slot:activator="{ props }">
                                 <v-checkbox 
+                                    density="compact"
                                     v-bind="props"
                                     class="checkboxx"
                                     label="Aumentar a precisão" color="red-darken-3" 
@@ -41,8 +38,20 @@
                             </template>
                         </v-tooltip>
                     </div>
+                    <div class="radios">
+                        <v-radio-group inline color="indigo" v-model="search.termo">
+                            <v-radio 
+                                density="compact"
+                                class="mr-2"
+                                v-for="item, i in termos" :key="i" 
+                                :label="item.name" :value="item.id">
+                            </v-radio>
+                        </v-radio-group>
+                    </div>
                     <div class="autocompletes">
                         <v-autocomplete
+                            class="fonteSearch"
+                            density="compact"
                             clearable
                             chips
                             label="Fonte da norma"
@@ -56,6 +65,8 @@
                             placeholder="Todas as fontes"
                         ></v-autocomplete>
                         <v-autocomplete
+                            class="periodoSearch"
+                            density="compact"
                             clearable
                             chips
                             label="Período"
@@ -153,11 +164,10 @@
                                     </div>   
                                     <div class="btns">
                                         <menuCopy :page="res._id" />
-                                        <page :page="res._source" :searchP="search.text" />
                                         <v-btn title="ver todo o documento" variant="tonal" size="small" color="red" @click="openLaw(res)">PDF</v-btn>
                                     </div>
                                 </div>
-                                <resumoSearch v-if="viewPreview" :text="res._source.text_page" />
+                                <resumoSearch v-if="viewPreview" :text="res._source.text_page" :page="res._source" :searchP="search.text" />
                             </div>
                             <v-pagination 
                                 density="compact"
@@ -753,7 +763,7 @@ section{
     transition: all .8s ease;
 }
 .container{
-    min-height: 60vh;
+    min-height: 70vh;
 }
 .headSearch{
     display: flex;
@@ -766,13 +776,25 @@ section{
 }
 .content{
     animation: slideTopSearch 1.5s ease-in;
+    padding: 2rem 5rem;
+    border: 1px solid grey;
+    border-radius: 12px;
 }
-
-.radios, .autocompletes{
+.line1{
+    display: flex;
+    justify-content: flex-start;
+}
+.line1 .textSearch{
+    width: 70%;
+}
+.autocompletes{
     display: flex;
     justify-content: space-between;
     width: 100%;
     gap: 1rem;
+}
+.fonteSearch, .periodoSearch{
+    width: 100%;
 }
 .checkboxx{
     display: flex;
@@ -822,14 +844,23 @@ section{
 }
 
 @media (max-width: 500px) {
-    .radios{
+    .content{
+        padding: 1rem;
+    }
+    .line1{
+        display: flex;
         flex-direction: column;
         align-items: baseline;
-        gap: 0;
+    }
+    .line1 .textSearch{
+        width: 100%;
     }
     .autocompletes{
         flex-direction: column;
         gap: 0;
+    }
+    .checkboxx{
+        margin-bottom: .5rem;
     }
     .btns2{
         display: flex;

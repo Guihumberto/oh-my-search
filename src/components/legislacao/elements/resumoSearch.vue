@@ -2,13 +2,24 @@
     <div class="pl-10 py-5 border-b">
         <p class="font-weight-light" v-html="extrairLinha">
         </p>
+        <div class="text-right">
+            <page :page="page" :searchP="searchP" />
+        </div>
+        
     </div>
 </template>
 
 <script>
+    import page from "@/components/legislacao/dialogs/page"
+
     export default {
+        components:{
+            page
+        },
         props:{
-            text: true
+            text: true,
+            page: Object,
+            searchP: String
         },
         computed: {
             extrairLinha(){
@@ -23,8 +34,10 @@
                         linhasFiltradas.push(linha)
                     }
                 });
+                let novo_array = linhasFiltradas.slice(0, 5)
+                novo_array.push('(...)')
                 linhasFiltradas.push('(...)')
-                return linhasFiltradas.join('<br>');
+                return novo_array.join('<br>');
             },
         },
         methods: {

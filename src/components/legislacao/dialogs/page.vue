@@ -1,12 +1,12 @@
 <template>
-    <div class="text-center">
+    <div class="text-right">
       <v-btn
         color="primary"
         size="small"
-        variant="tonal"
+        variant="text"
         title="Ver a página"
       >
-        Ver
+        Ver mais
         <v-dialog
           v-model="dialog"
           activator="parent"
