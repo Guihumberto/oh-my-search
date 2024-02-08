@@ -39,7 +39,7 @@
     export default {
         data(){
             return{
-                dialog: true,
+                dialog: false,
                 noShow: false
             }
         },
@@ -58,8 +58,17 @@
         methods:{
             naoMostrar(){
                 generalStore.changeShowsNews(false)
+            },
+            activeDialog(){
+              setTimeout(()=>{
+                this.dialog = true
+              }, 2000)
             }
+        },
+        created(){
+          this.activeDialog()
         }
+
     }
 </script>
 

@@ -21,7 +21,7 @@
             <div class="legislacao" v-else>
                 <small>Busca da lei por ano, fonte ou texto</small>
                 <h2 class="font-weight-bold">Legislação</h2>
-                <div class="my-5">
+                <div class="content">
                     <v-text-field
                         label="Buscar"
                         placeholder="Digite o nome ou número da norma"
@@ -29,7 +29,6 @@
                         density="compact"
                         prepend-inner-icon="mdi-magnify"
                         v-model.trim="search.text"
-                        :rules="[rules.required, rules.minname]"
                         clearable
                     ></v-text-field>
                     <div class="autocompletes">
@@ -244,6 +243,13 @@
     justify-content: center;
     align-items: center;
 }
+.content{
+    animation: slideTopSearch 1.5s ease-in;
+    margin: 1rem 0;
+    padding: 2rem 5rem;
+    border: 1px solid grey;
+    border-radius: 12px;
+}
 .oneresult{
     display: flex;
     justify-content: space-between;
@@ -296,6 +302,9 @@
     }
 }
 @media (max-width: 500px) {
+    .content{
+        padding: 1rem;
+    }
     .radios{
         flex-direction: column;
         align-items: baseline;

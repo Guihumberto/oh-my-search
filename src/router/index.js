@@ -22,6 +22,11 @@ const routes = [
         component: () => import('@/views/textoComplet.vue'),
       },
       {
+        path: '/textTimeLine/:id',
+        name: 'TimeLine',
+        component: () => import('@/views/textoTimeLine.vue'),
+      },
+      {
         path: '/legesporlei',
         name: 'Legislacaoporlei',
         component: () => import('@/views/LegesPorLei.vue'),
