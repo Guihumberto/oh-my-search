@@ -12,7 +12,7 @@
             <div class="my-5">
                 <titleLaw />
                 <timeLineBar :listLaw="lawTimeLine" />
-                <div class="my-10">
+                <div class="mt-10">
                     <h2>Filtros</h2>
                     <div class="border pa-5">
                         <v-text-field
@@ -33,15 +33,15 @@
                     >
                         <v-chip 
                             @click="pageFilter(false)" 
-                            class="transparent pr-0 chipClearArrow" v-if="artsFilter.length == 1"
+                            class=" bg-white pa-0" v-if="artsFilter.length == 1"
                             exact-active-class="0"
                         >
                             <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
                         </v-chip>
                         <v-chip
-                            v-for=" tag in artsFilter" :key="tag"
+                            v-for=" tag in artsFilter.sort()" :key="tag"
                             @click:close="artFilterRemove(tag)"
-                            close
+                            closable
                             >
                                 art. {{tag}}
                         </v-chip>
@@ -52,7 +52,7 @@
                         </v-btn>
                         <v-chip 
                             @click="pageFilter(true)" 
-                            class="transparent pl-0 chipClearArrow" v-if="artsFilter.length == 1">
+                            class="bg-white pa-0" v-if="artsFilter.length == 1">
                                 <v-icon>mdi-arrow-right-drop-circle-outline</v-icon>
                         </v-chip>
                     </v-chip-group>
@@ -168,7 +168,7 @@
             lastArt(){
                 const law = this.orgLawArt
                 const lastArt = law[law.length -1]
-                return lastArt.art
+                return 254
             },
         },
         methods:{
@@ -239,6 +239,14 @@
                 }   
                 this.artsFilter = []
                 this.artsFilter.push(art)
+            },
+            artFilterRemove(art){
+                let artRemove = this.artsFilter.findIndex( i => i == art)
+                this.artsFilter.splice(artRemove, 1)
+                
+                if(!this.artsFilter.length > 0) {
+                    this.artsFilterActive = false
+                }
             },
         },
         created(){
