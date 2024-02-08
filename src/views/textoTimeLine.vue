@@ -15,22 +15,49 @@
                 <div class="my-10">
                     <h2>Filtros</h2>
                     <div class="border pa-5">
-                    <v-form>
                         <v-text-field
                             variant="outlined"
                             density="compact"
                             label="Busca"
                             v-model.trim="search"
+                            @keydown.enter="filterJustArt(search.replace(/[^0-9]/g,''))"
                             clearable
                         ></v-text-field>
-                        <div class="text-right">
-                            <v-btn variant="flat" color="primary">Buscar</v-btn>
-                        </div>
-                    </v-form>
                     </div>
                 </div>
-                {{ search }}
-                <div v-for="art, i in searchLaw" :key="i">
+                <div>
+                    <v-chip-group
+                        mandatory
+                        active-class="primary--text"
+                        v-if="artsFilterActive"
+                    >
+                        <v-chip 
+                            @click="pageFilter(false)" 
+                            class="transparent pr-0 chipClearArrow" v-if="artsFilter.length == 1"
+                            exact-active-class="0"
+                        >
+                            <v-icon>mdi-arrow-left-drop-circle-outline</v-icon>
+                        </v-chip>
+                        <v-chip
+                            v-for=" tag in artsFilter" :key="tag"
+                            @click:close="artFilterRemove(tag)"
+                            close
+                            >
+                                art. {{tag}}
+                        </v-chip>
+                        <v-btn 
+                            class="withUppercase" 
+                            @click="clearAllArtsFilter()" v-if="artsFilter.length > 1" variant="text" color="error">
+                            Limpar Filtro
+                        </v-btn>
+                        <v-chip 
+                            @click="pageFilter(true)" 
+                            class="transparent pl-0 chipClearArrow" v-if="artsFilter.length == 1">
+                                <v-icon>mdi-arrow-right-drop-circle-outline</v-icon>
+                        </v-chip>
+                    </v-chip-group>
+                </div>
+                <div class="my-5" v-for="art, i in searchLaw" :key="i">
                     <p v-html="search ? markSearch(art.text) : art.text"></p>
                 </div> 
             </div>
@@ -69,7 +96,10 @@
                     dateCreate: '07/02/2024',
                     dateUpdate: '07/02/2024'
                 },
-                search: ''
+                search: '',
+                artIndice: '',
+                artsFilter: [],
+                artsFilterActive: false,
             }
         },
         computed:{
@@ -109,6 +139,21 @@
             searchLaw(){
                 let list = this.orgLawArt
 
+                if(this.artsFilterActive){
+                    let novoFiltro = []
+
+                    if(this.artsFilter){
+                        list.forEach(item => {
+                            this.artsFilter.forEach( art => {
+                                if(art == item.art){
+                                    novoFiltro.push(item)
+                                }
+                            })
+                        })
+                    }
+                    list = novoFiltro
+                }
+
                 if(this.search){
                     let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
                     //retirar caracteres especiais
@@ -119,7 +164,12 @@
                 } 
 
                 return list
-            }
+            },
+            lastArt(){
+                const law = this.orgLawArt
+                const lastArt = law[law.length -1]
+                return lastArt.art
+            },
         },
         methods:{
             async getAll(){
@@ -153,9 +203,43 @@
 
                 return item.replace(pattern, match => `<mark>${match}</mark>`);
             },
+            filterJustArt(art){     
+                if(art <= this.lastArt){
+                    this.artIndice = ''
+                    this.search = ''
+                    let findArt = this.artsFilter.find( x => x == art ) 
+                    
+                    if(!findArt){
+                        art > 0 ? this.artsFilter.push(art) : console.log("mensagem de erro2");
+                    }
+                    
+                    if(this.artsFilter.length > 0) {
+                        this.artsFilterActive = true
+                    } else {
+                        this.artsFilterActive = false
+                    } 
+                } else {
+                    console.log("mensagem de erro");
+                }
+            },  
+            clearAllArtsFilter(){
+                this.artsFilter = []
+                this.artsFilterActive = false
+            },
             voltar(){
                 this.$router.push("/leges");
-            }
+            },
+            pageFilter(item){
+                let art = this.artsFilter[0]
+                if(item) {
+                    art == this.lastArt ? art : art++  
+                  
+                } else {
+                  art == 1 ? art : art--
+                }   
+                this.artsFilter = []
+                this.artsFilter.push(art)
+            },
         },
         created(){
             this.getAll()
@@ -169,6 +253,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.v-btn.withUppercase{
+    text-transform: none !important;
 }
 
 </style>
