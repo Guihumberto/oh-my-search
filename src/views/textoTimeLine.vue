@@ -11,9 +11,11 @@
             <v-btn variant="tonal" @click="voltar" class="mb-2">Voltar</v-btn>
             <div class="my-5">
                 <titleLaw />
-                <timeLineBar class="mt-10" />
+                <timeLineBar :listLaw="lawTimeLine" />
                 <listLawsChanges />
-                <div v-html="joinPages"></div> 
+                <div v-for="art, i in orgLawArt" :key="i">
+                    <p v-html="art.text"></p>
+                </div> 
             </div>
         </div>
     </section>
@@ -39,7 +41,14 @@
                 load: false,
                 lawTimeLine:{
                     iDlawMain: '3e138',
-                    idsLawsChanges: ['622f4', 'd77b2', '167cf', '8474b'],
+                    idsLawsChanges: [
+                        '622f4', 'd77b2', '167cf', 
+                        '8474b', '88343', 'f60f4', 'dc9a3', 'b73f8', '8acb5', '36a80', 'f2e02', '54d1d', '9defb', 'ead22', '0614b',
+                        'd49a1', '20f70', '91dcc', '42cb3', 'b797f', '88f23', 'cf9de', 'f392a', '25551', '8982f', '6f991', 'a5faa', 
+                        '3f10c', 'd572b', '704b9', '1ae54', '6f888', '6990c', '00374', '7feee', '4c2fd', '042bc', '5163a', '8cacf', 
+                        '668fd', '5c778', '6ba49',
+                        '0a1af', 'dd1ee', 'fd1a1', 'e407d', '5481f', '5374e', '444ff', 'c1169', '53368', 'a727d'
+                    ],
                     dateCreate: '07/02/2024',
                     dateUpdate: '07/02/2024'
                 }
@@ -63,6 +72,21 @@
                 let listArtigos = list.replace(/\bArt\.\s+/g, '#$# Art. ').split('#$#').filter(x => x.startsWith(" Art."));
 
                 return listArtigos
+            },
+            orgLawArt(){
+                let list = this.joinPages
+                let listAll = []
+
+                list.forEach(x => {
+                    let artigos = {
+                        art: parseInt(x.substring(0, 10).replace(/\D/g, '')),
+                        text: x
+                    }
+
+                    listAll.push(artigos)
+                })
+
+                return listAll
             }
         },
         methods:{

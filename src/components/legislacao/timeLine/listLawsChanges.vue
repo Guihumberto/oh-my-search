@@ -1,10 +1,17 @@
 <template>
-    <div class="mt-10">
-        <h2>Lista de Leis</h2>
-        <div class="py-5 px-10">
-            <ul>
-                <li v-for="item, i in 10" :key="i">Item {{ item }}</li>
-            </ul>
+    <div class="my-10">
+        <h2>Filtros</h2>
+        <div class="border pa-5">
+           <v-form>
+            <v-text-field
+                variant="outlined"
+                density="compact"
+                label="Busca"
+            ></v-text-field>
+            <div class="text-right">
+                <v-btn variant="flat" color="primary">Buscar</v-btn>
+            </div>
+           </v-form>
         </div>
     </div>
 </template>
