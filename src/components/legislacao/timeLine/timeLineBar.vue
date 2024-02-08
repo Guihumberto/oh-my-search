@@ -64,7 +64,7 @@
       ],
       resultsSearch: [],
       totalDocs: 0,
-      reverse: true,
+      reverse: false,
       qtdAno: 5
     }),
     props:{

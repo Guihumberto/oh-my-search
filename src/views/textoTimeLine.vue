@@ -12,9 +12,26 @@
             <div class="my-5">
                 <titleLaw />
                 <timeLineBar :listLaw="lawTimeLine" />
-                <listLawsChanges />
-                <div v-for="art, i in orgLawArt" :key="i">
-                    <p v-html="art.text"></p>
+                <div class="my-10">
+                    <h2>Filtros</h2>
+                    <div class="border pa-5">
+                    <v-form>
+                        <v-text-field
+                            variant="outlined"
+                            density="compact"
+                            label="Busca"
+                            v-model.trim="search"
+                            clearable
+                        ></v-text-field>
+                        <div class="text-right">
+                            <v-btn variant="flat" color="primary">Buscar</v-btn>
+                        </div>
+                    </v-form>
+                    </div>
+                </div>
+                {{ search }}
+                <div v-for="art, i in searchLaw" :key="i">
+                    <p v-html="search ? markSearch(art.text) : art.text"></p>
                 </div> 
             </div>
         </div>
@@ -51,7 +68,8 @@
                     ],
                     dateCreate: '07/02/2024',
                     dateUpdate: '07/02/2024'
-                }
+                },
+                search: ''
             }
         },
         computed:{
@@ -87,6 +105,20 @@
                 })
 
                 return listAll
+            },
+            searchLaw(){
+                let list = this.orgLawArt
+
+                if(this.search){
+                    let search = this.search.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+                    //retirar caracteres especiais
+                    let exp = new RegExp(search.trim().replace(/[\[\]!'@><|//\\&*()_+=]/g, ""), "i")
+                    //fazer o filtro
+                    list =  list.filter(item => exp.test(item.text.normalize('NFD').replace(/[\u0300-\u036f]/g, "") ) || exp.test( item.art ))
+
+                } 
+
+                return list
             }
         },
         methods:{
@@ -114,6 +146,12 @@
                 }finally{
                     this.load = false
                 }
+            },
+            markSearch(item){
+                let termoPesquisado = this.search.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+                let pattern = new RegExp(termoPesquisado,"gi");
+
+                return item.replace(pattern, match => `<mark>${match}</mark>`);
             },
             voltar(){
                 this.$router.push("/leges");
