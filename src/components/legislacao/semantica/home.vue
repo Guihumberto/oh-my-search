@@ -1,7 +1,7 @@
 <template>
     <section class="bg-black">
         <div class="container">
-            <v-btn class="mb-10" @click="voltar" variant="outlined">Voltar</v-btn>
+            <v-btn variant="text" class="mb-10" @click="voltar">Voltar</v-btn>
             <h2>Busca Semântica na Legislação</h2>
             <div class="my-5 w-50">
                 <h3 class="mb-2">Insira sua consulta</h3>
