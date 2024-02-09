@@ -36,6 +36,11 @@ const routes = [
         name: 'Page',
         component: () => import('@/views/textPage.vue'),
       },
+      {
+        path: '/linkedData',
+        name: 'linkedData',
+        component: () => import('@/views/linkedData.vue'),
+      },
     ],
   },
 ]

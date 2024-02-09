@@ -6,6 +6,22 @@
                 <div class="d-flex align-center">
                     <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
                     <help :idHelp="1" class="ml-2" />
+                    <v-menu>
+                        <template v-slot:activator="{ props }">
+                        <v-btn flat variant="text" icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                        </template>
+
+                        <v-list class="pa-0">
+                        <v-list-item
+                            v-for="(item, i) in items"
+                            :key="i"
+                            link
+                            :to="item.url"
+                        >
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                        </v-list>
+                </v-menu>
                 </div>
             </div>
             <div class="headSearchTwo">
@@ -266,7 +282,11 @@
                     text: 'Nova página adicionada ao documento.',
                     timeout: 2000
                 },
-                viewPreview: true
+                viewPreview: true,
+                items: [
+                    { title: 'Busca Semântica', url:'/linkedData' },
+                    { title: 'Busca por lei', url: '/legesporlei'}
+                ],
             }
         },
         computed:{
