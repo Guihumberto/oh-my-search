@@ -64,7 +64,7 @@
                     <small>Total de normas: {{ qtdLaws }}</small>
                 </div>
                 <div class="allLaws">
-                    <v-expansion-panels>
+                    <v-expansion-panels v-if="orgLaws.length">
                         <v-expansion-panel
                             v-for="tipo, t in orgLaws.sort(orderTipo)" :key="t"
                         >
@@ -91,6 +91,9 @@
             
                         </v-expansion-panel>
                     </v-expansion-panels>
+                    <v-alert variant="tonal" type="warning" v-else>
+                        <p>Não há conexão com o banco de dados</p>
+                    </v-alert>
                 </div>
             </div>
         </div>

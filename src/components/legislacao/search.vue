@@ -4,7 +4,6 @@
             <div class="headSearch">
                 <div>{{ reqRead }}</div> 
                 <div class="d-flex align-center">
-                    <router-link class="linkTO" to="/legesporlei">Busca por lei</router-link>
                     <help :idHelp="1" class="ml-2" />
                     <v-menu>
                         <template v-slot:activator="{ props }">
@@ -197,7 +196,7 @@
                         </div>
                     </div>
                     <v-alert variant="tonal" type="warning" v-else>
-                        <p>Não foram encontrados resultados para sua busca</p>
+                        <p>{{ result }}</p>
                     </v-alert>
                 </div>
             </div>
@@ -287,6 +286,7 @@
                     { title: 'Busca Semântica', url:'/linkedData' },
                     { title: 'Busca por lei', url: '/legesporlei'}
                 ],
+                result: "Não foram encontrados resultados para sua busca"
             }
         },
         computed:{
@@ -684,6 +684,9 @@
                         }
                     } catch (error) {
                         console.log("erro");
+                        this.snack.snackbar = true
+                        this.snack.text = 'Sem conexão com a base de dados.'
+                        this.result = 'Sem conexão com a base de dados.'
                     }finally{
                         this.load = false
                         const element = document.getElementById('results')
